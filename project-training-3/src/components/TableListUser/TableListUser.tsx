@@ -32,7 +32,6 @@ const TableListUser = ({ isPage }: TableListUserProps) => {
   const [statusUser, setStatusUser] = useState<Users[] | undefined>();
   const { data, error, isLoading } = useUsers();
   const [search, setSearch] = useState("");
-  console.log(search);
 
   useEffect(() => {
     const userItem = statusUser?.filter((user) => {
