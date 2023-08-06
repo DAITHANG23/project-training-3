@@ -1,0 +1,16 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Lato", sans-serif;
+  max-width: 1440px;
+  max-height: 1195px;
+}
+
+::placeholder {
+  color: "#C5CACD";
+  opacity: 0.5;
+}
