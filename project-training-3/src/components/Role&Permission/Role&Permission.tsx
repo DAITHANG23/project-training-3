@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Table, TableCell, TableBody, Box, FormControl } from "@mui/material";
 import {
@@ -41,6 +41,15 @@ const RolePermission = () => {
       id: "3",
     },
   ]);
+
+  useEffect(() => {
+    setRoles(rolesStorage);
+  }, []);
+  const rolesStorage = JSON.parse(localStorage.getItem("Roles") || "[]");
+
+  useEffect(() => {
+    window.localStorage.setItem("Roles", JSON.stringify(roles));
+  }, [roles]);
 
   const [roleUpdated, setRoleUpdate] = useState<string>();
   const [open, setOpen] = useState(false);

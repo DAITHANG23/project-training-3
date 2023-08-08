@@ -6,12 +6,16 @@ import {
   TableBody,
   TableCell,
   TableRow,
+  Radio,
+  RadioGroup,
+  FormControlLabel,
+  FormControl,
 } from "@mui/material";
 
 import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   StyledTableCell,
   StyledCollapse,
@@ -26,6 +30,9 @@ import {
   StyledTableCellRadio,
   StyledTableUpdate,
   StyledTableRowTitle,
+  BpCheckedIcon,
+  BpIcon,
+  StyledTableRow,
 } from "./RoleUpdate.style";
 
 interface RoleUpdateProps {
@@ -35,55 +42,78 @@ interface RoleUpdateProps {
 const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
   const [open, setOpen] = useState(false);
+
   const elements = [
     "Dashboard",
     "Reports",
-    "Alarm & Events",
+    "AlarmEvents",
     "Sensors",
-    "Site configuration",
-    "Device configuration",
-    "Usermanagement",
+    "SiteConfiguration",
+    "DeviceConfiguration",
+    "UserManagement",
   ];
   const onClick = (id: string) => {
     setCardIDOpen(id);
     setOpen(!open);
   };
-  const { register, handleSubmit } = useForm();
+  const { handleSubmit, control } = useForm();
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
-    // setRoles(newRoleList);
     console.log(data);
   });
 
   const TableBodyContent = elements.map((el) => {
-    const elementsFeature = ["Add", "Edit", "View"];
+    const elementsFeature = ["add", "edit", "view"];
 
     const TableEdit = elementsFeature.map((elFeature) => {
       return (
         <StyledTableRowTitle key={`${elFeature}-${el}`}>
-          <TableCell sx={{ width: "616px" }}>
+          <TableCell sx={{ width: "57%" }}>
             {elFeature} {el}
           </TableCell>
+          <TableCell>
+            <FormControl>
+              <Controller
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Please choose option",
+                  },
+                }}
+                control={control}
+                name={`${elFeature}${el}`}
+                render={({ field, fieldState }) => (
+                  <RadioGroup
+                    {...field}
+                    row={true}
+                    aria-labelledby="demo-row-radio-buttons-group-label"
+                    sx={{ gap: "160px" }}
+                  >
+                    <FormControlLabel
+                      value="Yes"
+                      control={
+                        <Radio
+                          checkedIcon={<BpCheckedIcon />}
+                          icon={<BpIcon />}
+                        />
+                      }
+                      label=""
+                    />
 
-          <TableCell sx={{ width: "196px" }}>
-            <input
-              {...register(`${elFeature}-${el}`, {
-                required: true,
-              })}
-              value="Yes"
-              type="radio"
-              name={`${elFeature}-${el}`}
-            />
-          </TableCell>
-          <TableCell sx={{ width: "196px" }}>
-            <input
-              {...register(`${elFeature}-${el}`, {
-                required: true,
-              })}
-              value="No"
-              type="radio"
-              name={`${elFeature}-${el}`}
-            />
+                    <FormControlLabel
+                      value="No"
+                      control={
+                        <Radio
+                          checkedIcon={<BpCheckedIcon />}
+                          icon={<BpIcon />}
+                        />
+                      }
+                      label=""
+                    />
+                  </RadioGroup>
+                )}
+              />
+            </FormControl>
           </TableCell>
         </StyledTableRowTitle>
       );
@@ -110,17 +140,27 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
             </IconButton>
           </StyledTableCell>
         </StyledTableRowTitle>
-
-        <StyledCollapse
-          key={el}
-          in={cardIDOpen === el ? open : undefined}
-          timeout="auto"
-          unmountOnExit
-        >
-          <StyledTableUpdate>
-            <TableBody>{TableEdit}</TableBody>
-          </StyledTableUpdate>
-        </StyledCollapse>
+        <TableRow aria-label="purchases">
+          <TableCell
+            component="th"
+            colSpan={6}
+            sx={{
+              padding: "0px",
+              border: "none",
+            }}
+          >
+            <StyledCollapse
+              key={el}
+              in={cardIDOpen === el ? open : undefined}
+              timeout="auto"
+              unmountOnExit
+            >
+              <StyledTableUpdate>
+                <TableBody>{TableEdit}</TableBody>
+              </StyledTableUpdate>
+            </StyledCollapse>
+          </TableCell>
+        </TableRow>
       </>
     );
   });
@@ -143,14 +183,14 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
         <StyledTableContainer>
           <Table aria-label="collapsible table">
             <TableHead>
-              <TableRow>
+              <StyledTableRow>
                 <StyledTableCellTitle>
                   {roleUpdated.toUpperCase()} ROLE
                 </StyledTableCellTitle>
                 <StyledTableCellRadio>Yes</StyledTableCellRadio>
                 <StyledTableCellRadio>No</StyledTableCellRadio>
                 <TableCell></TableCell>
-              </TableRow>
+              </StyledTableRow>
             </TableHead>
             <TableBody>{TableBodyContent}</TableBody>
           </Table>

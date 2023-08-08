@@ -9,8 +9,3 @@ body {
   max-width: 1440px;
   max-height: 1195px;
 }
-
-::placeholder {
-  color: "#C5CACD";
-  opacity: 0.5;
-}

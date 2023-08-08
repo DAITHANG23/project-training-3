@@ -11,18 +11,19 @@ import {
 import { BiEditAlt } from "react-icons/bi";
 
 export const StyledBoxContainer = styled("div")(() => ({
-  margin: "40px",
   position: "relative",
 }));
 
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   backgroundColor: theme.palette.background.paper,
-  marginTop: theme.spacing(5),
+  margin: "32px 40px",
   borderRadius: "16px",
+  width: "93%",
 }));
-export const StyleBoxHeader = styled(Box)(() => ({
+export const StyleBoxHeader = styled(Box)(({ theme }) => ({
   display: "flex",
   justifyContent: "space-between",
+  margin: "40px",
 }));
 
 export const StyledButton = styled("button")(({ theme }) => ({
@@ -136,8 +137,9 @@ export const StyledInputDes = styled("input")(({ theme }) => ({
   width: "572px",
   height: "122px",
   borderRadius: "16px",
-  padding: theme.spacing(1),
+  padding: "12px 0px 100px 12px",
   border: `1px solid ${theme.palette.primary.contrastText}`,
+  textAlign: "start",
 }));
 
 export const StyledBoxButton = styled(Box)(() => ({

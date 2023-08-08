@@ -44,6 +44,10 @@ export const StyledInputSearch = styled("input")(({ theme }) => ({
   borderRadius: " 16px",
   width: "216px",
   height: "32px",
+  "::placeholder": {
+    color: "#C5CACD",
+    opacity: 0.7,
+  },
 }));
 
 export const StyledIconGlassBold = styled(PiMagnifyingGlassBold)(
