@@ -81,7 +81,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                   },
                 }}
                 control={control}
-                name={`${elFeature}${el}`}
+                name={`${elFeature}-${el}`}
                 render={({ field, fieldState }) => (
                   <RadioGroup
                     {...field}
