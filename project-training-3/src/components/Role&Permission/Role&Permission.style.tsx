@@ -55,7 +55,9 @@ export const StyledTableCell = styled(TableCell)(({ theme }) => ({
     borderBottom: "1px solid #E8ECEE",
   },
 }));
-
+export const StyledBoxDes = styled(Box)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+}));
 export const StyledTableCellDes = styled(TableCell)(({ theme }) => ({
   color: theme.palette.primary.dark,
   fontSize: "14px",

@@ -1,5 +1,6 @@
 import { styled, Box, Typography } from "@mui/material";
 import { PiMagnifyingGlassBold } from "react-icons/pi";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 export const StyledHeaderContainer = styled(Box)(({ theme }) => ({
   width: "100%",
   height: "72px",
@@ -85,4 +86,8 @@ export const StyledRoleLogin = styled(Typography)(({ theme }) => ({
   fontSize: "11px",
   lineHeight: "12px",
   fontWeight: "400",
+}));
+
+export const StyledExpandMoreIcon = styled(ExpandMoreIcon)(() => ({
+  marginTop: "5px",
 }));

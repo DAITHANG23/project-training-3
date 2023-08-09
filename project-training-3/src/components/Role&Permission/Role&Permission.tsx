@@ -23,6 +23,7 @@ import {
   StyledBtnCancle,
   StyledBtnCreate,
   StyledContentError,
+  StyledBoxDes,
 } from "@/components/Role&Permission/Role&Permission.style";
 import { v4 as uuidv4 } from "uuid";
 import RoleUpdate from "@/components/RoleUpdate/RoleUpdate";
@@ -134,7 +135,7 @@ const RolePermission = () => {
                   <StyledContentError>
                     {errors.role?.message}
                   </StyledContentError>
-                  <Box sx={{ marginTop: "24px" }}>
+                  <StyledBoxDes>
                     <StyledInputDes
                       type="text"
                       id="role"
@@ -150,7 +151,7 @@ const RolePermission = () => {
                     <StyledContentError>
                       {errors.describe?.message}
                     </StyledContentError>
-                  </Box>
+                  </StyledBoxDes>
 
                   <StyledBoxButton>
                     <StyledBtnCancle onClick={handleClose}>

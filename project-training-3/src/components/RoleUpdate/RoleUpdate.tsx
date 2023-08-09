@@ -7,7 +7,6 @@ import {
   TableCell,
   TableRow,
   Radio,
-  RadioGroup,
   FormControlLabel,
   FormControl,
 } from "@mui/material";
@@ -33,6 +32,9 @@ import {
   BpCheckedIcon,
   BpIcon,
   StyledTableRow,
+  StyledRadioGroup,
+  StyledTableCellCollapse,
+  StyledTableTitle,
 } from "./RoleUpdate.style";
 
 interface RoleUpdateProps {
@@ -68,9 +70,9 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
     const TableEdit = elementsFeature.map((elFeature) => {
       return (
         <StyledTableRowTitle key={`${elFeature}-${el}`}>
-          <TableCell sx={{ width: "57%" }}>
+          <StyledTableTitle>
             {elFeature} {el}
-          </TableCell>
+          </StyledTableTitle>
           <TableCell>
             <FormControl>
               <Controller
@@ -83,11 +85,11 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                 control={control}
                 name={`${elFeature}-${el}`}
                 render={({ field, fieldState }) => (
-                  <RadioGroup
+                  <StyledRadioGroup
                     {...field}
                     row={true}
                     aria-labelledby="demo-row-radio-buttons-group-label"
-                    sx={{ gap: "160px" }}
+                    sx={{}}
                   >
                     <FormControlLabel
                       value="Yes"
@@ -110,7 +112,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                       }
                       label=""
                     />
-                  </RadioGroup>
+                  </StyledRadioGroup>
                 )}
               />
             </FormControl>
@@ -141,14 +143,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
           </StyledTableCell>
         </StyledTableRowTitle>
         <TableRow aria-label="purchases">
-          <TableCell
-            component="th"
-            colSpan={6}
-            sx={{
-              padding: "0px",
-              border: "none",
-            }}
-          >
+          <StyledTableCellCollapse component="th" colSpan={6}>
             <StyledCollapse
               key={el}
               in={cardIDOpen === el ? open : undefined}
@@ -159,7 +154,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                 <TableBody>{TableEdit}</TableBody>
               </StyledTableUpdate>
             </StyledCollapse>
-          </TableCell>
+          </StyledTableCellCollapse>
         </TableRow>
       </>
     );

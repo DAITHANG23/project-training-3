@@ -8,6 +8,7 @@ import {
   Box,
   Table,
   TableRow,
+  RadioGroup,
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
@@ -102,6 +103,15 @@ export const StyledTableRowTitle = styled(TableRow)(({ theme }) => ({
 export const StyledTableUpdate = styled(Table)(({ theme }) => ({
   borderRadius: "16px",
   backgroundColor: theme.palette.background.paper,
+}));
+
+export const StyledRadioGroup = styled(RadioGroup)(() => ({ gap: "160px" }));
+export const StyledTableTitle = styled(TableCell)(() => ({
+  width: "57%",
+}));
+export const StyledTableCellCollapse = styled(TableCell)(() => ({
+  padding: "0px",
+  border: "none",
 }));
 
 export const BpIcon = styled(CheckIcon)(({ theme }) => ({

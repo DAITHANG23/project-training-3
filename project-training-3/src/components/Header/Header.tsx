@@ -1,5 +1,5 @@
 import { Typography, Popover } from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+
 import {
   StyledHeaderContainer,
   StyledUserContainer,
@@ -13,6 +13,7 @@ import {
   StyledContainerContent,
   StyledNameLogin,
   StyledRoleLogin,
+  StyledExpandMoreIcon,
 } from "@/components/Header/Header.style";
 import { useState } from "react";
 
@@ -74,7 +75,7 @@ const Header = ({ isPage }: HeaderProps) => {
             <StyledNameLogin>Nicholas</StyledNameLogin>
             <StyledRoleLogin>Administrator</StyledRoleLogin>
           </StyledContainerContent>
-          <ExpandMoreIcon style={{ marginTop: "5px" }} />
+          <StyledExpandMoreIcon />
         </StyledButtonLogin>
         <Popover
           id={id}
