@@ -46,11 +46,11 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   const elements = [
     "Dashboard",
     "Reports",
-    "AlarmEvents",
+    "Alarm & Events",
     "Sensors",
-    "SiteConfiguration",
-    "DeviceConfiguration",
-    "UserManagement",
+    "Site configuration",
+    "Device configuration",
+    "Usermanagement",
   ];
   const onClick = (id: string) => {
     setCardIDOpen(id);
@@ -63,7 +63,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   });
 
   const TableBodyContent = elements.map((el) => {
-    const elementsFeature = ["add", "edit", "view"];
+    const elementsFeature = ["Add", "Edit", "View"];
 
     const TableEdit = elementsFeature.map((elFeature) => {
       return (
