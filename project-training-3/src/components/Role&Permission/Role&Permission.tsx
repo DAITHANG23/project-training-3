@@ -51,6 +51,7 @@ const RolePermission = () => {
   useEffect(() => {
     window.localStorage.setItem("Roles", JSON.stringify(roles));
   }, [roles]);
+  console.log(roles);
 
   const [roleUpdated, setRoleUpdate] = useState<string>();
   const [open, setOpen] = useState(false);
@@ -79,7 +80,7 @@ const RolePermission = () => {
     );
   });
 
-  const { register, handleSubmit, formState } = useForm({
+  const { register, handleSubmit, formState, reset } = useForm({
     defaultValues: {
       role: "",
       describe: "",
@@ -95,6 +96,8 @@ const RolePermission = () => {
     const newRoleList = [...roles, newRole];
 
     setRoles(newRoleList);
+    reset();
+    setOpen(false);
   });
 
   return (
