@@ -1,18 +1,18 @@
 import Header from "./components/Header/Header";
-import { StyledBoxContainer, StyledBodyContainer } from "@/App.style";
+import { StyledBoxContainer, StyledBodyContainer } from "@/App.styles";
 import SideBar from "./components/SideBar/SideBar";
 import { useState } from "react";
 import TableListUser from "./components/TableListUser/TableListUser";
 
 function App() {
-  const [isPage, setIsPage] = useState<number>();
+  const [page, setPage] = useState<number>();
 
   return (
     <StyledBoxContainer>
-      <SideBar setIsPage={setIsPage} />
+      <SideBar setPage={setPage} />
       <StyledBodyContainer>
-        <Header isPage={isPage} />
-        <TableListUser isPage={isPage} />
+        <Header page={page} />
+        <TableListUser valuePage={page} />
       </StyledBodyContainer>
     </StyledBoxContainer>
   );

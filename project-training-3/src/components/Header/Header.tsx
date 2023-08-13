@@ -14,13 +14,13 @@ import {
   StyledNameLogin,
   StyledRoleLogin,
   StyledExpandMoreIcon,
-} from "@/components/Header/Header.style";
+} from "@/components/Header/Header.styles";
 import { useState } from "react";
 
 interface HeaderProps {
-  isPage?: number;
+  page?: number;
 }
-const Header = ({ isPage }: HeaderProps) => {
+const Header = ({ page }: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -34,7 +34,7 @@ const Header = ({ isPage }: HeaderProps) => {
   const id = open ? "simple-popover" : undefined;
   return (
     <StyledHeaderContainer>
-      {isPage === 1 ? (
+      {page === 1 ? (
         <StyledUserContainer>
           <img
             src="./images/user.png"

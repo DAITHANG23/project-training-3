@@ -1,6 +1,6 @@
 import axios from "axios";
 
 export const getUsers = async () => {
-  const res = await axios.get("http://localhost:8080/api/user");
+  const res = await axios.get("/user");
   return res.data.users;
 };

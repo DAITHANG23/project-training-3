@@ -35,7 +35,7 @@ import {
   StyledRadioGroup,
   StyledTableCellCollapse,
   StyledTableTitle,
-} from "./RoleUpdate.style";
+} from "@/components/RoleUpdate/RoleUpdate.styles";
 
 interface RoleUpdateProps {
   roleUpdated: string;
@@ -89,7 +89,6 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                     {...field}
                     row={true}
                     aria-labelledby="demo-row-radio-buttons-group-label"
-                    sx={{}}
                   >
                     <FormControlLabel
                       value="Yes"

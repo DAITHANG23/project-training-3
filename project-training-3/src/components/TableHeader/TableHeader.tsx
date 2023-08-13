@@ -6,17 +6,17 @@ import {
   StyledBoxButton,
   StyledInputSearch,
   StyledIconGlassBold,
-} from "@/components/TableHeader/TableHeader.style";
+} from "@/components/TableHeader/TableHeader.styles";
 
 interface TableHeaderProps {
-  onClickButtonStatus: (status: string) => void;
+  onClickButtonStatus: (status: Status) => void;
   onSearch: (item: string) => void;
 }
-
+type Status = "Active" | "Suspended";
 const TableHeader = ({ onClickButtonStatus, onSearch }: TableHeaderProps) => {
-  const [status, setStatus] = useState<string>("Active");
+  const [status, setStatus] = useState<Status>("Active");
   const [search, setSearch] = useState("");
-  const onClickChooseStatus = (status: string) => {
+  const onClickChooseStatus = (status: Status) => {
     setStatus(status);
     onClickButtonStatus(status);
   };

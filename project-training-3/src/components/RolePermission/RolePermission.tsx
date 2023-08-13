@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Table, TableCell, TableBody, Box, FormControl } from "@mui/material";
+import { Table, TableCell, TableBody, FormControl } from "@mui/material";
 import {
   StyledBoxContainer,
   StyledButton,
@@ -24,7 +24,7 @@ import {
   StyledBtnCreate,
   StyledContentError,
   StyledBoxDes,
-} from "@/components/Role&Permission/Role&Permission.style";
+} from "@/components/RolePermission/RolePermission.styles";
 import { v4 as uuidv4 } from "uuid";
 import RoleUpdate from "@/components/RoleUpdate/RoleUpdate";
 

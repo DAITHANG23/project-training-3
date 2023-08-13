@@ -10,17 +10,17 @@ import {
   StyledDirectionIcon,
   StyledTypography,
   StyledDotIcon,
-} from "@/components/SideBar/SideBar.style";
+} from "@/components/SideBar/SideBar.styles";
 interface SideBarProps {
-  setIsPage: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setPage: React.Dispatch<React.SetStateAction<number | undefined>>;
 }
 
-const SideBar = ({ setIsPage }: SideBarProps) => {
+const SideBar = ({ setPage }: SideBarProps) => {
   const [isChoosed, setIsChoosed] = useState<number>(2);
 
   const onChooseTitleSideBar = (id: number) => {
     setIsChoosed(id);
-    setIsPage(id);
+    setPage(id);
   };
   return (
     <StyledSideBar>

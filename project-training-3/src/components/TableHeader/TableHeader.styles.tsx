@@ -1,5 +1,6 @@
 import { styled, Box } from "@mui/material";
 import { PiMagnifyingGlassBold } from "react-icons/pi";
+
 export const StyleTableHeaderContainer = styled("div")(({ theme }) => ({
   display: "flex",
   backgroundColor: theme.palette.background.paper,

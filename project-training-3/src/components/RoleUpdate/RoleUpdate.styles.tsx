@@ -17,6 +17,7 @@ export const StyledTableRow = styled(TableRow)(({ theme }) => ({
     borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
   },
 }));
+
 export const StyledTableCell = styled(TableCell)<{ styleactive: boolean }>(
   ({ theme, styleactive }) => ({
     fontSize: "14px",
@@ -36,14 +37,17 @@ export const StyledBoxHeader = styled(Box)(({ theme }) => ({
   justifyContent: "space-between",
   margin: theme.spacing(4),
 }));
+
 export const StyledBoxTitle = styled(Box)(() => ({
   display: "flex",
 }));
+
 export const StyledTableCellTitle = styled(TableCell)(() => ({
   width: "624px",
   fontSize: "16px",
   fontWeight: 700,
 }));
+
 export const StyledCollapse = styled(Collapse)(({ theme }) => ({
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.default,
@@ -94,22 +98,26 @@ export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
 export const StyledTableCellRadio = styled(TableCell)(() => ({
   width: "200px",
 }));
+
 export const StyledTableRowTitle = styled(TableRow)(({ theme }) => ({
-  "&:last-child td, &:last-child th": { border: 0 },
+  "&:nth-child(13) td, &:last-child th": { border: 0 },
   "& td, & th": {
     borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
   },
 }));
+
 export const StyledTableUpdate = styled(Table)(({ theme }) => ({
   borderRadius: "16px",
   backgroundColor: theme.palette.background.paper,
 }));
 
 export const StyledRadioGroup = styled(RadioGroup)(() => ({ gap: "160px" }));
+
 export const StyledTableTitle = styled(TableCell)(() => ({
   width: "57%",
 }));
-export const StyledTableCellCollapse = styled(TableCell)(() => ({
+
+export const StyledTableCellCollapse = styled(TableCell)(({ theme }) => ({
   padding: "0px",
   border: "none",
 }));

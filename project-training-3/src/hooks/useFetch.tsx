@@ -1,6 +1,6 @@
 import { getUsers } from "@/api";
 import { useQuery } from "react-query";
-
+export type Status = "Active" | "Suspended";
 export interface Users {
   id: number;
   numberPhone: string;
@@ -8,7 +8,7 @@ export interface Users {
   name: string;
   role: string;
   team: string;
-  status: string;
+  status: Status;
   lastActive: { date: string; time: string };
 }
 

@@ -17,15 +17,15 @@ import {
   StyledTitleRowName,
   StyledTitleRowStatus,
   StyledTablePagination,
-} from "@/components/TableListUser/TableListUser.styled";
-import { useUsers } from "@/hooks/useFetch";
-import { Users } from "@/hooks/useFetch";
-import RolePermission from "../Role&Permission/Role&Permission";
+} from "@/components/TableListUser/TableListUser.styles";
+import { useUsers, Users, Status } from "@/hooks/useFetch";
+import RolePermission from "@/components/RolePermission/RolePermission";
 
 interface TableListUserProps {
-  isPage?: number;
+  valuePage?: number;
 }
-const TableListUser = ({ isPage }: TableListUserProps) => {
+
+const TableListUser = ({ valuePage }: TableListUserProps) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [users, setUsers] = useState<Users[]>();
@@ -108,7 +108,7 @@ const TableListUser = ({ isPage }: TableListUserProps) => {
     setSearch(item);
   };
 
-  const onClickButtonStatus = (status: string) => {
+  const onClickButtonStatus = (status: Status) => {
     const listUsers = users?.filter((user) => {
       return user.status === status;
     });
@@ -118,7 +118,7 @@ const TableListUser = ({ isPage }: TableListUserProps) => {
 
   return (
     <div>
-      {isPage === 1 ? (
+      {valuePage === 1 ? (
         <StyledTableContainer>
           <TableHeader
             onClickButtonStatus={onClickButtonStatus}
