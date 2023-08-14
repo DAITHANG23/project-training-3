@@ -27,31 +27,17 @@ import {
 } from "@/components/RolePermission/RolePermission.styles";
 import { v4 as uuidv4 } from "uuid";
 import RoleUpdate from "@/components/RoleUpdate/RoleUpdate";
+import { useRoles } from "@/hooks/useFetch";
+import { mutate } from "swr";
 
+interface Roles {
+  role: string;
+  describe: string;
+  id: string;
+}
 const RolePermission = () => {
-  const [roles, setRoles] = useState([
-    { role: "Administrator", describe: "Des...", id: "1" },
-    {
-      role: "Management",
-      describe: "Des...",
-      id: "2",
-    },
-    {
-      role: "User",
-      describe: "Des...",
-      id: "3",
-    },
-  ]);
-
-  useEffect(() => {
-    setRoles(rolesStorage);
-  }, []);
-  const rolesStorage = JSON.parse(localStorage.getItem("Roles") || "[]");
-
-  useEffect(() => {
-    window.localStorage.setItem("Roles", JSON.stringify(roles));
-  }, [roles]);
-  console.log(roles);
+  const [roles, setRoles] = useState<Roles[]>([]);
+  const { data, error, isLoading } = useRoles();
 
   const [roleUpdated, setRoleUpdate] = useState<string>();
   const [open, setOpen] = useState(false);
@@ -88,14 +74,34 @@ const RolePermission = () => {
   });
   const { errors } = formState;
 
+  useEffect(() => {
+    if (data) {
+      setRoles(data);
+    }
+  }, [data]);
+
+  if (isLoading) return <>{"Loading..."}</>;
+  if (error instanceof Error)
+    return <>{"An error has occurred: " + error.message}</>;
+  console.log(data);
+
   const onFormSubmitRoleHandle = handleSubmit((roleItem) => {
     const newRole = {
       ...roleItem,
       id: uuidv4(),
     };
-    const newRoleList = [...roles, newRole];
+    const listRoles = [...roles, newRole];
+    fetch("/roles", {
+      method: "POST",
+      body: JSON.stringify({
+        listRoles,
+      }),
+    })
+      // .then((res) => res.json())
+      .then((res) => {
+        if (res) window.location.reload();
+      });
 
-    setRoles(newRoleList);
     reset();
     setOpen(false);
   });

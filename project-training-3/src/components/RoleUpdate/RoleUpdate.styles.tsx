@@ -100,7 +100,7 @@ export const StyledTableCellRadio = styled(TableCell)(() => ({
 }));
 
 export const StyledTableRowTitle = styled(TableRow)(({ theme }) => ({
-  "&:nth-child(13) td, &:last-child th": { border: 0 },
+  "&:nth-child(13) td, &:last-child th,&:last-child td": { border: 0 },
   "& td, & th": {
     borderBottom: `1px solid ${theme.palette.primary.contrastText}`,
   },

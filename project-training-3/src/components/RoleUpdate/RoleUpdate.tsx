@@ -15,6 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useForm, Controller } from "react-hook-form";
+import { v4 as uuidv4 } from "uuid";
 import {
   StyledTableCell,
   StyledCollapse,
@@ -44,7 +45,7 @@ interface RoleUpdateProps {
 const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
   const [open, setOpen] = useState(false);
-
+  const [rolesUpdateList, setRolesUpdateList] = useState<any>([]);
   const elements = [
     "Dashboard",
     "Reports",
@@ -61,6 +62,28 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   const { handleSubmit, control } = useForm();
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
+    console.log(data);
+    const newRoleUpdate = {
+      ...data,
+      nameRole: roleUpdated,
+      id: uuidv4(),
+    };
+
+    const listNewRoleUpdate = [...rolesUpdateList, newRoleUpdate];
+    setRolesUpdateList(listNewRoleUpdate);
+
+    // fetch("/updaterole", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     listNewRoleUpdate,
+    //   }),
+    // })
+    //   .then((res) => res.json())
+
+    //   .then((data) =>
+    //     setRolesUpdateList(data.roleItemUpdate.listNewRoleUpdate)
+    //   );
+
     console.log(data);
   });
 

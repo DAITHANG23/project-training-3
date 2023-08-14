@@ -1,4 +1,4 @@
-import { getUsers } from "@/api";
+import { getUsers, getRoles } from "@/api";
 import { useQuery } from "react-query";
 export type Status = "Active" | "Suspended";
 export interface Users {
@@ -12,14 +12,29 @@ export interface Users {
   lastActive: { date: string; time: string };
 }
 
+export interface Roles {
+  id: string;
+  role: string;
+  describe: string;
+}
+
 const QUERY_KEY = {
   useGetUsers: ["fetchData"],
+  useGetRoles: ["fetchDataRoles"],
 };
 
 export const useUsers = () => {
   const { data, isLoading, error } = useQuery<Users[]>(
     QUERY_KEY.useGetUsers,
     getUsers
+  );
+  return { data, isLoading, error };
+};
+
+export const useRoles = () => {
+  const { data, isLoading, error } = useQuery<Roles[]>(
+    QUERY_KEY.useGetRoles,
+    getRoles
   );
   return { data, isLoading, error };
 };
