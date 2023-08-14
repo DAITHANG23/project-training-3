@@ -273,43 +273,14 @@ export const handlers = [
   }),
   rest.post("/roles", (req, res, ctx) => {
     const listRoles = req.body;
-    //const roleItem = JSON.parse(listRoles);
     sessionStorage.setItem("list-role", listRoles);
 
-    return res(
-      ctx.status(200),
-      ctx.json({
-        //roleItem,
-        // roles: [
-        //   { role: "Administrator", describe: "Des...", id: "1" },
-        //   {
-        //     role: "Management",
-        //     describe: "Des...",
-        //     id: "2",
-        //   },
-        //   {
-        //     role: "User",
-        //     describe: "Des...",
-        //     id: "3",
-        //   },
-        //   // newRoleList,
-        // ],
-      })
-    );
+    return res(ctx.status(200), ctx.json({}));
   }),
 
   rest.get("/roles", (req, res, ctx) => {
     const roleList = sessionStorage.getItem("list-role");
     const roles = JSON.parse(roleList);
-
-    // if (!roleList) {
-    //   return res(
-    //     ctx.status(403),
-    //     ctx.json({
-    //       errorMessage: "Not authorized",
-    //     })
-    //   );
-    // }
 
     return res(
       ctx.status(200),
@@ -321,8 +292,15 @@ export const handlers = [
 
   rest.post("/updaterole", (req, res, ctx) => {
     const listNewRoleUpdate = req.body;
-    const roleItemUpdate = JSON.parse(listNewRoleUpdate);
+
     sessionStorage.setItem("listNewRoleUpdate", listNewRoleUpdate);
+
+    return res(ctx.status(200), ctx.json({}));
+  }),
+
+  rest.get("/updaterole", (req, res, ctx) => {
+    const roleList = sessionStorage.getItem("listNewRoleUpdate");
+    const roleItemUpdate = JSON.parse(roleList);
 
     return res(
       ctx.status(200),

@@ -28,7 +28,6 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import RoleUpdate from "@/components/RoleUpdate/RoleUpdate";
 import { useRoles } from "@/hooks/useFetch";
-import { mutate } from "swr";
 
 interface Roles {
   role: string;
@@ -41,6 +40,7 @@ const RolePermission = () => {
 
   const [roleUpdated, setRoleUpdate] = useState<string>();
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => {
     setOpen(true);
   };

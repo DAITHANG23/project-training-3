@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Box,
   Table,
@@ -37,7 +37,7 @@ import {
   StyledTableCellCollapse,
   StyledTableTitle,
 } from "@/components/RoleUpdate/RoleUpdate.styles";
-
+import { useRoleUpdate } from "@/hooks/useFetch";
 interface RoleUpdateProps {
   roleUpdated: string;
 }
@@ -45,7 +45,8 @@ interface RoleUpdateProps {
 const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
   const [open, setOpen] = useState(false);
-  const [rolesUpdateList, setRolesUpdateList] = useState<any>([]);
+  const { data, error, isLoading } = useRoleUpdate();
+  const [rolesUpdateList, setRolesUpdateList] = useState<never[]>([]);
   const elements = [
     "Dashboard",
     "Reports",
@@ -55,14 +56,26 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
     "Device configuration",
     "Usermanagement",
   ];
+
   const onClick = (id: string) => {
     setCardIDOpen(id);
     setOpen(!open);
   };
+
   const { handleSubmit, control } = useForm();
 
+  useEffect(() => {
+    if (data) {
+      setRolesUpdateList(data);
+    }
+  }, [data]);
+
+  if (isLoading) return <>{"Loading..."}</>;
+  if (error instanceof Error)
+    return <>{"An error has occurred: " + error.message}</>;
+  console.log(rolesUpdateList);
+
   const onFormSubmitEditHandle = handleSubmit((data) => {
-    console.log(data);
     const newRoleUpdate = {
       ...data,
       nameRole: roleUpdated,
@@ -70,21 +83,13 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
     };
 
     const listNewRoleUpdate = [...rolesUpdateList, newRoleUpdate];
-    setRolesUpdateList(listNewRoleUpdate);
 
-    // fetch("/updaterole", {
-    //   method: "POST",
-    //   body: JSON.stringify({
-    //     listNewRoleUpdate,
-    //   }),
-    // })
-    //   .then((res) => res.json())
-
-    //   .then((data) =>
-    //     setRolesUpdateList(data.roleItemUpdate.listNewRoleUpdate)
-    //   );
-
-    console.log(data);
+    fetch("/updaterole", {
+      method: "POST",
+      body: JSON.stringify({
+        listNewRoleUpdate,
+      }),
+    });
   });
 
   const TableBodyContent = elements.map((el) => {
@@ -92,7 +97,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
 
     const TableEdit = elementsFeature.map((elFeature) => {
       return (
-        <StyledTableRowTitle key={`${elFeature}-${el}`}>
+        <StyledTableRowTitle key={`${elFeature}${el}`}>
           <StyledTableTitle>
             {elFeature} {el}
           </StyledTableTitle>
@@ -106,7 +111,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                   },
                 }}
                 control={control}
-                name={`${elFeature}-${el}`}
+                name={`${elFeature}${el}`}
                 render={({ field, fieldState }) => (
                   <StyledRadioGroup
                     {...field}
