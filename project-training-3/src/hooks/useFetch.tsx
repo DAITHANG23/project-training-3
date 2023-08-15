@@ -41,7 +41,7 @@ export const useRoles = () => {
 };
 
 export const useRoleUpdate = () => {
-  const { data, isLoading, error } = useQuery<never[]>(
+  const { data, isLoading, error } = useQuery<string[]>(
     QUERY_KEY.useGetRoleUpdate,
     getRoleUpdate
   );

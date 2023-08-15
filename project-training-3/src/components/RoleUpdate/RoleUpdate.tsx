@@ -46,7 +46,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
   const [open, setOpen] = useState(false);
   const { data, error, isLoading } = useRoleUpdate();
-  const [rolesUpdateList, setRolesUpdateList] = useState<never[]>([]);
+  const [rolesUpdateList, setRolesUpdateList] = useState<string[]>([]);
   const elements = [
     "Dashboard",
     "Reports",
