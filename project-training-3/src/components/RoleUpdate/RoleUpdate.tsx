@@ -73,7 +73,6 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   if (isLoading) return <>{"Loading..."}</>;
   if (error instanceof Error)
     return <>{"An error has occurred: " + error.message}</>;
-  console.log(rolesUpdateList);
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
     const newRoleUpdate = {
@@ -112,7 +111,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                 }}
                 control={control}
                 name={`${elFeature}${el}`}
-                render={({ field, fieldState }) => (
+                render={({ field }) => (
                   <StyledRadioGroup
                     {...field}
                     row={true}
