@@ -96,11 +96,9 @@ const RolePermission = () => {
       body: JSON.stringify({
         listRoles,
       }),
-    })
-      // .then((res) => res.json())
-      .then((res) => {
-        if (res) window.location.reload();
-      });
+    }).then((res) => {
+      if (res) window.location.reload();
+    });
 
     reset();
     setOpen(false);

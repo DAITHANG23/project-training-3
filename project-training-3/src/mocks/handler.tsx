@@ -273,14 +273,14 @@ export const handlers = [
   }),
   rest.post("/roles", (req, res, ctx) => {
     const listRoles = req.body;
-    sessionStorage.setItem("list-role", listRoles);
+    sessionStorage.setItem("list-role", listRoles as string);
 
     return res(ctx.status(200), ctx.json({}));
   }),
 
   rest.get("/roles", (req, res, ctx) => {
     const roleList = sessionStorage.getItem("list-role");
-    const roles = JSON.parse(roleList);
+    const roles = JSON.parse(roleList as string);
 
     return res(
       ctx.status(200),
@@ -293,14 +293,14 @@ export const handlers = [
   rest.post("/updaterole", (req, res, ctx) => {
     const listNewRoleUpdate = req.body;
 
-    sessionStorage.setItem("listNewRoleUpdate", listNewRoleUpdate);
+    sessionStorage.setItem("listNewRoleUpdate", listNewRoleUpdate as string);
 
     return res(ctx.status(200), ctx.json({}));
   }),
 
   rest.get("/updaterole", (req, res, ctx) => {
     const roleList = sessionStorage.getItem("listNewRoleUpdate");
-    const roleItemUpdate = JSON.parse(roleList);
+    const roleItemUpdate = JSON.parse(roleList as string);
 
     return res(
       ctx.status(200),

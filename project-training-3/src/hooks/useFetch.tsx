@@ -17,13 +17,7 @@ export interface Roles {
   role: string;
   describe: string;
 }
-// export interface RolesUpdate{
-//   AddDashboard: string;
-// EditDashboar: string;
-// ViewDashboard: string;
-// id: string;
-// nameRole: string;
-// }
+
 const QUERY_KEY = {
   useGetUsers: ["fetchData"],
   useGetRoles: ["fetchDataRoles"],
