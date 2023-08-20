@@ -3,13 +3,14 @@ import { useQuery } from "react-query";
 export type Status = "Active" | "Suspended";
 export interface Users {
   id: number;
-  numberPhone: string;
+  tel: string;
   image: string;
   name: string;
   role: string;
   team: string;
   status: Status;
-  lastActive: { date: string; time: string };
+  date: string;
+  time: string;
 }
 
 export interface Roles {

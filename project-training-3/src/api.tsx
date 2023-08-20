@@ -2,8 +2,8 @@ import axios from "axios";
 axios.defaults.baseURL = "http://localhost:3000";
 
 export const getUsers = async () => {
-  const res = await axios.get("/user");
-  return res.data?.users;
+  const res = await axios.get("/users");
+  return res.data?.users?.listUsers;
 };
 
 export const getRoles = async () => {

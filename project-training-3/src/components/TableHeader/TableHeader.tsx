@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   StyleTableHeaderContainer,
   StyledButtonHeader,
@@ -7,23 +7,31 @@ import {
   StyledInputSearch,
   StyledIconGlassBold,
 } from "@/components/TableHeader/TableHeader.styles";
-
+interface formValue {
+  search: string;
+}
 interface TableHeaderProps {
   onClickButtonStatus: (status: Status) => void;
-  onSearch: (item: string) => void;
+  onSearch: (value: string) => void;
 }
 type Status = "Active" | "Suspended";
 const TableHeader = ({ onClickButtonStatus, onSearch }: TableHeaderProps) => {
   const [status, setStatus] = useState<Status>("Active");
   const [search, setSearch] = useState("");
+
+  const typingTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const onClickChooseStatus = (status: Status) => {
     setStatus(status);
     onClickButtonStatus(status);
   };
 
   const onSearchHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(event.target.value);
-    onSearch(event.target.value);
+    const value = event.target.value;
+    setSearch(value);
+    if (!onSearch) return;
+    typingTimeoutRef.current = setTimeout(() => {
+      onSearch(value);
+    }, 300);
   };
 
   return (
