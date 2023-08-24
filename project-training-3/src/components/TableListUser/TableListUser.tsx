@@ -12,8 +12,7 @@ import {
   Button,
 } from "@mui/material";
 import TableHeader from "@/components/TableHeader/TableHeader";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+
 import {
   StyledTitleRow,
   StyledTableCellName,
@@ -45,8 +44,10 @@ import {
   StyledBoxButtonModal,
   StyledRadioStatus,
   StyleInputNumberPhone,
+  StyledDeleteIcon,
+  StyledEditIcon,
 } from "@/components/TableListUser/TableListUser.styles";
-import { useUsers, Users, Status } from "@/hooks/useFetch";
+import { useUsers, Users, Status, useCreateUser } from "@/hooks/useFetch";
 import RolePermission from "@/components/RolePermission/RolePermission";
 
 import { v4 as uuidv4 } from "uuid";
@@ -61,9 +62,10 @@ type Order = "asc" | "desc";
 const TableListUser = ({ valuePage }: TableListUserProps) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [users, setUsers] = useState<Users[]>([]);
+  const [users, setUsers] = useState<Users[] | undefined>([]);
   const [statusUser, setStatusUser] = useState<Users[] | undefined>();
-  const { data, error, isLoading } = useUsers();
+  const { data, error, isLoading, refetch } = useUsers();
+  const { mutate: createUser } = useCreateUser();
   const [search, setSearch] = useState("");
   const [open, setOpen] = useState(false);
   const [oneOderDirection, setOneOderDirection] = useState<Order>("asc");
@@ -109,7 +111,12 @@ const TableListUser = ({ valuePage }: TableListUserProps) => {
       image: "",
     },
   });
+  // useEffect(() => {
+  //   const data: Users[] | undefined = queryClient.getQueryData("fetchData");
+  //   console.log(data);
 
+  //   setUsers(data);
+  // }, []);
   useEffect(() => {
     if (data) {
       setUsers(data);
@@ -118,12 +125,9 @@ const TableListUser = ({ valuePage }: TableListUserProps) => {
   if (isLoading) return <>{"Loading..."}</>;
   if (error instanceof Error)
     return <>{"An error has occurred: " + error.message}</>;
-
-  console.log(statusUser);
-
+  const { errors } = formState;
   // Modal create user
 
-  const { errors } = formState;
   const onOpenModal = () => {
     setOpen(true);
   };
@@ -134,9 +138,28 @@ const TableListUser = ({ valuePage }: TableListUserProps) => {
 
   const onFormSubmitCreateUserHandle = handleSubmit((userItem) => {
     const day = new Date();
+
+    // fetch("/users/new", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     ...userItem,
+    //     id: uuidv4(),
+    //     date: [
+    //       day.getDate(),
+    //       MONTHS[day.getMonth()],
+    //       day.getFullYear().toString().substr(-2),
+    //     ].join(" "),
+    //     time: [
+    //       ("0" + day.getHours()).substr(-2),
+    //       ("0" + day.getMinutes()).substr(-2),
+    //     ].join(":"),
+    //   }),
+    // }).then((res) => {
+    //   if (res) refetch();
+    // });
     const newUser = {
       ...userItem,
-      id: uuidv4(),
+      id: Number(uuidv4()),
       date: [
         day.getDate(),
         MONTHS[day.getMonth()],
@@ -147,17 +170,7 @@ const TableListUser = ({ valuePage }: TableListUserProps) => {
         ("0" + day.getMinutes()).substr(-2),
       ].join(":"),
     };
-
-    const listUsers = [...users, newUser];
-    fetch("/users", {
-      method: "POST",
-      body: JSON.stringify({
-        listUsers,
-      }),
-    }).then((res) => {
-      if (res) window.location.reload();
-    });
-
+    createUser(newUser);
     reset();
     setOpen(false);
   });
@@ -276,17 +289,13 @@ const TableListUser = ({ valuePage }: TableListUserProps) => {
             >
               <Box>
                 <Button onClick={() => onEditUserItem(id)}>
-                  <EditIcon
-                    sx={{ width: "20px", height: "20px", marginRight: "5px" }}
-                  />
+                  <StyledEditIcon />
                   Edit
                 </Button>
               </Box>
               <Box>
                 <Button onClick={() => onRemoveUserItem(id)}>
-                  <DeleteIcon
-                    sx={{ width: "20px", height: "20px", marginRight: "5px" }}
-                  />
+                  <StyledDeleteIcon />
                   Remove
                 </Button>
               </Box>

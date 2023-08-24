@@ -1,5 +1,11 @@
-import { getUsers, getRoles, getRoleUpdate } from "@/api";
-import { useQuery } from "react-query";
+import {
+  getUsers,
+  getRoles,
+  getRoleUpdate,
+  createUsers,
+  createRoles,
+} from "@/api";
+import { useQuery, useMutation, useQueryClient } from "react-query";
 export type Status = "Active" | "Suspended";
 export interface Users {
   id: number;
@@ -8,7 +14,7 @@ export interface Users {
   name: string;
   role: string;
   team: string;
-  status: Status;
+  status: string;
   date: string;
   time: string;
 }
@@ -26,25 +32,68 @@ const QUERY_KEY = {
 };
 
 export const useUsers = () => {
-  const { data, isLoading, error } = useQuery<Users[]>(
+  const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
     QUERY_KEY.useGetUsers,
-    getUsers
+    getUsers,
+    {
+      keepPreviousData: true,
+      refetchOnMount: true,
+      refetchOnReconnect: false,
+      staleTime: Infinity,
+    }
   );
-  return { data, isLoading, error };
+
+  return { data, isLoading, error, isFetching, refetch };
+};
+
+export const useCreateUser = () => {
+  const queryClient = useQueryClient();
+  return useMutation(createUsers, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("fetchData");
+
+      queryClient.setQueryData("fetchData", (oldQueryData: any) => {
+        return [...oldQueryData, data];
+      });
+    },
+  });
 };
 
 export const useRoles = () => {
-  const { data, isLoading, error } = useQuery<Roles[]>(
+  const { data, isLoading, error, refetch } = useQuery<Roles[]>(
     QUERY_KEY.useGetRoles,
-    getRoles
+    getRoles,
+    {
+      keepPreviousData: true,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      staleTime: Infinity,
+    }
   );
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };
+export const useCreateRole = () => {
+  const queryClient = useQueryClient();
+  return useMutation(createRoles, {
+    onSuccess: (data) => {
+      queryClient.invalidateQueries("fetchDataRoles");
 
+      queryClient.setQueryData("fetchDataRoles", (oldQueryData: any) => {
+        return [...oldQueryData, data];
+      });
+    },
+  });
+};
 export const useRoleUpdate = () => {
-  const { data, isLoading, error } = useQuery<string[]>(
+  const { data, isLoading, error, refetch } = useQuery<string[]>(
     QUERY_KEY.useGetRoleUpdate,
-    getRoleUpdate
+    getRoleUpdate,
+    {
+      keepPreviousData: true,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+      staleTime: Infinity,
+    }
   );
-  return { data, isLoading, error };
+  return { data, isLoading, error, refetch };
 };

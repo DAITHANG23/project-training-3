@@ -13,6 +13,9 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { MuiTelInput } from "mui-tel-input";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   width: "93%",
   margin: "32px 40px",
@@ -242,4 +245,14 @@ export const StyleInputNumberPhone = styled(MuiTelInput)(({ theme }) => ({
     fontSize: "16px",
     textAlign: "center",
   },
+}));
+export const StyledEditIcon = styled(EditIcon)(() => ({
+  width: "20px",
+  height: "20px",
+  marginRight: "5px",
+}));
+export const StyledDeleteIcon = styled(DeleteIcon)(() => ({
+  width: "20px",
+  height: "20px",
+  marginRight: "5px",
 }));

@@ -45,7 +45,7 @@ interface RoleUpdateProps {
 const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
   const [open, setOpen] = useState(false);
-  const { data, error, isLoading } = useRoleUpdate();
+  const { data, error, isLoading, refetch } = useRoleUpdate();
   const [rolesUpdateList, setRolesUpdateList] = useState<string[]>([]);
   const elements = [
     "Dashboard",
@@ -75,19 +75,15 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
     return <>{"An error has occurred: " + error.message}</>;
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
-    const newRoleUpdate = {
-      ...data,
-      nameRole: roleUpdated,
-      id: uuidv4(),
-    };
-
-    const listNewRoleUpdate = [...rolesUpdateList, newRoleUpdate];
-
-    fetch("/updaterole", {
+    fetch("/updaterole/new", {
       method: "POST",
       body: JSON.stringify({
-        listNewRoleUpdate,
+        ...data,
+        nameRole: roleUpdated,
+        id: uuidv4(),
       }),
+    }).then((res) => {
+      if (res) refetch();
     });
   });
 

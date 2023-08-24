@@ -6,7 +6,33 @@ import reportWebVitals from "./reportWebVitals";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/themes/themes";
 import { QueryClient, QueryClientProvider } from "react-query";
-const queryClient = new QueryClient();
+import { ReactQueryDevtools } from "react-query/devtools";
+import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
+import { persistQueryClient } from "react-query/persistQueryClient-experimental";
+import { compress, decompress } from "lz-string";
+import { broadcastQueryClient } from "react-query/broadcastQueryClient-experimental";
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+});
+const localStoragePersistor = createWebStoragePersistor({
+  storage: window.localStorage,
+  serialize: (data) => compress(JSON.stringify(data)),
+  deserialize: (data) => JSON.parse(decompress(data)),
+});
+persistQueryClient({
+  queryClient,
+  persistor: localStoragePersistor,
+  maxAge: Infinity,
+});
+broadcastQueryClient({
+  queryClient,
+  broadcastChannel: "fetchData",
+});
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
@@ -22,6 +48,7 @@ root.render(
       <ThemeProvider theme={theme}>
         <App />
       </ThemeProvider>
+      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   </React.StrictMode>
 );

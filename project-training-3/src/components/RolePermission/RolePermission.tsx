@@ -27,7 +27,7 @@ import {
 } from "@/components/RolePermission/RolePermission.styles";
 import { v4 as uuidv4 } from "uuid";
 import RoleUpdate from "@/components/RoleUpdate/RoleUpdate";
-import { useRoles } from "@/hooks/useFetch";
+import { useRoles, useCreateRole } from "@/hooks/useFetch";
 
 interface Roles {
   role: string;
@@ -36,11 +36,11 @@ interface Roles {
 }
 const RolePermission = () => {
   const [roles, setRoles] = useState<Roles[]>([]);
-  const { data, error, isLoading } = useRoles();
+  const { data, error, isLoading, refetch } = useRoles();
 
   const [roleUpdated, setRoleUpdate] = useState<string>();
   const [open, setOpen] = useState(false);
-
+  const { mutate: createRole } = useCreateRole();
   const handleOpen = () => {
     setOpen(true);
   };
@@ -83,23 +83,19 @@ const RolePermission = () => {
   if (isLoading) return <>{"Loading..."}</>;
   if (error instanceof Error)
     return <>{"An error has occurred: " + error.message}</>;
-  console.log(data);
 
   const onFormSubmitRoleHandle = handleSubmit((roleItem) => {
-    const newRole = {
-      ...roleItem,
-      id: uuidv4(),
-    };
-    const listRoles = [...roles, newRole];
-    fetch("/roles", {
-      method: "POST",
-      body: JSON.stringify({
-        listRoles,
-      }),
-    }).then((res) => {
-      if (res) window.location.reload();
-    });
-
+    // fetch("/roles/new", {
+    //   method: "POST",
+    //   body: JSON.stringify({
+    //     ...roleItem,
+    //     id: uuidv4(),
+    //   }),
+    // }).then((res) => {
+    //   if (res) refetch();
+    // });
+    const newRole = { ...roleItem, id: uuidv4() };
+    createRole(newRole);
     reset();
     setOpen(false);
   });
