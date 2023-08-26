@@ -8,6 +8,7 @@ const roleUpdates: string[] = [];
 export const handlers = [
   rest.post("/users/new", async (req, res, ctx) => {
     const user = await req.json();
+    console.log("user", user);
     users.push(user);
     return res(ctx.status(201), ctx.json({ user }));
   }),

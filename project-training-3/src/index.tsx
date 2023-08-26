@@ -10,7 +10,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
 import { persistQueryClient } from "react-query/persistQueryClient-experimental";
 import { compress, decompress } from "lz-string";
-import { broadcastQueryClient } from "react-query/broadcastQueryClient-experimental";
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -27,10 +27,6 @@ persistQueryClient({
   queryClient,
   persistor: localStoragePersistor,
   maxAge: Infinity,
-});
-broadcastQueryClient({
-  queryClient,
-  broadcastChannel: "fetchData",
 });
 
 const root = ReactDOM.createRoot(
