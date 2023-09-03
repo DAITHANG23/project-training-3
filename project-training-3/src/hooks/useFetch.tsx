@@ -50,7 +50,7 @@ export const useCreateUser = () => {
   const queryClient = useQueryClient();
   return useMutation(createUsers, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("fetchData");
+      //queryClient.invalidateQueries("fetchData");
 
       queryClient.setQueryData("fetchData", (oldQueryData: any) => {
         return [...oldQueryData, data];
@@ -76,8 +76,6 @@ export const useCreateRole = () => {
   const queryClient = useQueryClient();
   return useMutation(createRoles, {
     onSuccess: (data) => {
-      queryClient.invalidateQueries("fetchDataRoles");
-
       queryClient.setQueryData("fetchDataRoles", (oldQueryData: any) => {
         return [...oldQueryData, data];
       });

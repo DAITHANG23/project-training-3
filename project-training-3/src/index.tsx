@@ -18,6 +18,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 const localStoragePersistor = createWebStoragePersistor({
   storage: window.localStorage,
   serialize: (data) => compress(JSON.stringify(data)),
