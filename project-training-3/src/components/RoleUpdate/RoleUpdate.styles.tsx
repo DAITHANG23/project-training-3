@@ -12,6 +12,16 @@ import {
 } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 
+export const StyledBoxContainer = styled(Box)(() => ({
+  display: "flex",
+}));
+
+export const StyledBodyContainer = styled(Box)(({ theme }) => ({
+  width: "82%",
+  backgroundColor: "#fbfcfc",
+  position: "relative",
+}));
+
 export const StyledTableRow = styled(TableRow)(({ theme }) => ({
   "& td, & th": {
     borderBottom: `1px solid ${theme.palette.primary.contrastText}`,

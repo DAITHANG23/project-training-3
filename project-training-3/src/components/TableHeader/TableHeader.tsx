@@ -8,19 +8,28 @@ import {
   StyledIconGlassBold,
 } from "@/components/TableHeader/TableHeader.styles";
 import { useSearching } from "@/hooks/useSearching";
+import { useUsersSearch, Users } from "@/hooks/useFetch";
 
 interface TableHeaderProps {
   onClickButtonStatus: (status: Status) => void;
-  onSearch: (value: string) => void;
+  onSearch: (value: Users[] | undefined) => void;
 }
 type Status = "Active" | "Suspended";
+
 const TableHeader = ({ onClickButtonStatus, onSearch }: TableHeaderProps) => {
   const [status, setStatus] = useState<Status>("Active");
 
-  useEffect(() => {
-    if (search) onSearch(search);
-  });
   const [search, onSearchHandler] = useSearching();
+
+  const { data, isLoading, error } = useUsersSearch(search);
+
+  useEffect(() => {
+    if (search) {
+      let content = data;
+      onSearch(content);
+    }
+  }, [search, onSearch, data]);
+
   const onClickChooseStatus = (status: Status) => {
     setStatus(status);
     onClickButtonStatus(status);

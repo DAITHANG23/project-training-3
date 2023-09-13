@@ -10,6 +10,7 @@ import { ReactQueryDevtools } from "react-query/devtools";
 import { createWebStoragePersistor } from "react-query/createWebStoragePersistor-experimental";
 import { persistQueryClient } from "react-query/persistQueryClient-experimental";
 import { compress, decompress } from "lz-string";
+import { BrowserRouter } from "react-router-dom";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -42,10 +43,12 @@ if (process.env.NODE_ENV === "development") {
 root.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider theme={theme}>
-        <App />
-      </ThemeProvider>
-      <ReactQueryDevtools initialIsOpen={false} />
+      <BrowserRouter>
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </BrowserRouter>
     </QueryClientProvider>
   </React.StrictMode>
 );

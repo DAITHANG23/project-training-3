@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
   StyledSideBar,
@@ -11,17 +11,26 @@ import {
   StyledTypography,
   StyledDotIcon,
 } from "@/components/SideBar/SideBar.styles";
-interface SideBarProps {
-  setPage: React.Dispatch<React.SetStateAction<number | undefined>>;
-}
+import { useNavigate } from "react-router-dom";
 
-const SideBar = ({ setPage }: SideBarProps) => {
-  const [isChoosed, setIsChoosed] = useState<number>(2);
+const SideBar = () => {
+  const [isChooseUserPage, setIsChooseUserPage] = useState<boolean>(true);
+  const [isChooseRolePage, setIsChooseRolePage] = useState<boolean>(false);
 
-  const onChooseTitleSideBar = (id: number) => {
-    setIsChoosed(id);
-    setPage(id);
+  const navigate = useNavigate();
+
+  const onChooseUserPage = () => {
+    setIsChooseUserPage(true);
+    setIsChooseRolePage(false);
+    navigate("/users");
   };
+
+  const onChooseRolePage = () => {
+    setIsChooseRolePage(true);
+    setIsChooseUserPage(false);
+    navigate("/roles");
+  };
+
   return (
     <StyledSideBar>
       <StyledImage src="./images/Logo.png" alt="logo" />
@@ -32,16 +41,16 @@ const SideBar = ({ setPage }: SideBarProps) => {
           <StyledDirectionIcon />
         </StyledButton>
         <StyledButtonUser
-          styleActive={isChoosed === 1}
-          onClick={() => onChooseTitleSideBar(1)}
+          styleActive={isChooseUserPage}
+          onClick={onChooseUserPage}
         >
           <StyledDotIcon />
           <StyledTypography>Users</StyledTypography>
           <StyledDirectionIcon />
         </StyledButtonUser>
         <StyledButtonUser
-          styleActive={isChoosed === 2}
-          onClick={() => onChooseTitleSideBar(2)}
+          styleActive={isChooseRolePage}
+          onClick={onChooseRolePage}
         >
           <StyledDotIcon />
           <StyledTypography>Role & Permissions</StyledTypography>

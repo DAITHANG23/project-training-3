@@ -15,7 +15,7 @@ import IconButton from "@mui/material/IconButton";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 import { useForm, Controller } from "react-hook-form";
-import { v4 as uuidv4 } from "uuid";
+
 import {
   StyledTableCell,
   StyledCollapse,
@@ -37,16 +37,41 @@ import {
   StyledTableCellCollapse,
   StyledTableTitle,
 } from "@/components/RoleUpdate/RoleUpdate.styles";
-import { useRoleUpdate } from "@/hooks/useFetch";
+import { useRoleUpdate, useRoleUpdateItem } from "@/hooks/useFetch";
+import { useNavigate, useParams } from "react-router-dom";
+
 interface RoleUpdateProps {
   roleUpdated: string;
 }
 
-const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
+const RoleUpdate = () => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
   const [open, setOpen] = useState(false);
-  const { data, error, isLoading, refetch } = useRoleUpdate();
-  const [rolesUpdateList, setRolesUpdateList] = useState<string[]>([]);
+  //const { data, error, isLoading, refetch } = useRoleUpdate();
+  const params = useParams();
+  const idRole = params.id;
+  const { mutate: updateRole } = useRoleUpdate(idRole);
+  const { data, isLoading, error } = useRoleUpdateItem(idRole);
+  const [rolesUpdateList, setRolesUpdateList] = useState<any>();
+  const navigate = useNavigate();
+
+  // const elementsData = [
+  //   { title: "Add Dashboard", value: "" },
+  //   { title: "Add Reports", value: "" },
+  //   { title: "Add Alarm & Events", value: "" },
+  //   { title: "Add Sensors", value: "" },
+  //   { title: "Add Site configuration", value: "" },
+  //   { title: "Add Device configuration", value: "" },
+  //   { title: "Add Usermanagement", value: "" },
+  //   { title: "Add Dashboard", value: "" },
+  //   { title: "Add Reports", value: "" },
+  //   { title: "Add Alarm & Events", value: "" },
+  //   { title: "Add Sensors", value: "" },
+  //   { title: "Add Site configuration", value: "" },
+  //   { title: "Add Device configuration", value: "" },
+  //   { title: "Add Usermanagement", value: "" },
+  // ];
+
   const elements = [
     "Dashboard",
     "Reports",
@@ -61,30 +86,24 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
     setCardIDOpen(id);
     setOpen(!open);
   };
-
+  console.log("rolesUpdateList", rolesUpdateList);
   const { handleSubmit, control } = useForm();
 
-  useEffect(() => {
-    if (data) {
-      setRolesUpdateList(data);
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data) {
+  //     //setRolesUpdateList(data);
+  //   }
+  // }, [data]);
 
-  if (isLoading) return <>{"Loading..."}</>;
-  if (error instanceof Error)
-    return <>{"An error has occurred: " + error.message}</>;
+  // if (isLoading) return <>{"Loading..."}</>;
+  // if (error instanceof Error)
+  //   return <>{"An error has occurred: " + error.message}</>;
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
-    fetch("/updaterole/new", {
-      method: "POST",
-      body: JSON.stringify({
-        ...data,
-        nameRole: roleUpdated,
-        id: uuidv4(),
-      }),
-    }).then((res) => {
-      if (res) refetch();
-    });
+    const roleItem = data;
+    setRolesUpdateList(data);
+    updateRole(idRole, roleItem);
+    navigate("/roles");
   });
 
   const TableBodyContent = elements.map((el) => {
@@ -115,6 +134,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
                   >
                     <FormControlLabel
                       value="Yes"
+                      //checked={data.}
                       control={
                         <Radio
                           checkedIcon={<BpCheckedIcon />}
@@ -191,7 +211,7 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
             <StyledSpan>/</StyledSpan>
             <StyledTitle>Roles & Permission</StyledTitle>
             <StyledSpan>/</StyledSpan>
-            <StyledTitleActive>{roleUpdated} role</StyledTitleActive>
+            <StyledTitleActive> role</StyledTitleActive>
           </StyledBoxTitle>
 
           <StyledButton type="submit">SAVE</StyledButton>
@@ -202,7 +222,8 @@ const RoleUpdate = ({ roleUpdated }: RoleUpdateProps) => {
             <TableHead>
               <StyledTableRow>
                 <StyledTableCellTitle>
-                  {roleUpdated.toUpperCase()} ROLE
+                  {/* {roleUpdated.toUpperCase()}  */}
+                  ROLE
                 </StyledTableCellTitle>
                 <StyledTableCellRadio>Yes</StyledTableCellRadio>
                 <StyledTableCellRadio>No</StyledTableCellRadio>

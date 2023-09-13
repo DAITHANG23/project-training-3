@@ -1,7 +1,6 @@
 import {
   styled,
   TableCell,
-  Typography,
   TableBody,
   TableHead,
   TableContainer,
@@ -11,11 +10,17 @@ import {
   Modal,
   RadioGroup,
 } from "@mui/material";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import { MuiTelInput } from "mui-tel-input";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
 
+import { MuiTelInput } from "mui-tel-input";
+
+export const StyledBoxContainer = styled(Box)(() => ({
+  display: "flex",
+}));
+export const StyledBodyContainer = styled(Box)(({ theme }) => ({
+  width: "82%",
+  backgroundColor: "#fbfcfc",
+  position: "relative",
+}));
 export const StyledTableContainer = styled(TableContainer)(({ theme }) => ({
   width: "93%",
   margin: "32px 40px",
@@ -77,38 +82,6 @@ export const StyledTitleRowStatus = styled(TableCell)(({ theme }) => ({
   textAlign: "center",
 }));
 
-export const StyledTableRowContent = styled(Typography)(() => ({
-  fontSize: "14px",
-}));
-
-export const StyledTitleNumberPhone = styled(Typography)(({ theme }) => ({
-  color: theme.palette.primary.light,
-  fontSize: "14px",
-}));
-
-export const StyledTableCellName = styled(TableCell)(({ theme }) => ({
-  display: "flex",
-  gap: theme.spacing(2),
-}));
-
-export const StyledTitleStatus = styled(Typography)(({ theme }) => ({
-  border: "none",
-  color: theme.palette.background.paper,
-  backgroundColor: theme.palette.text.primary,
-  textAlign: "center",
-  padding: "4px 12px",
-  borderRadius: "100px",
-  width: "92px",
-  fontSize: "14px",
-  fontWeight: 400,
-}));
-
-export const StyledButtonEdit = styled("button")(({ theme }) => ({
-  border: "none",
-  cursor: "pointer",
-  backgroundColor: theme.palette.background.paper,
-}));
-
 export const StyledTablePagination = styled(TablePagination)(({ theme }) => ({
   backgroundColor: "#FFF",
   display: "flex",
@@ -117,45 +90,11 @@ export const StyledTablePagination = styled(TablePagination)(({ theme }) => ({
     paddingLeft: "630px",
   },
 }));
-export const StyledTableCellStatus = styled(TableCell)(() => ({
-  paddingLeft: "100px !important",
-}));
-export const StyleIcon = styled(MoreVertIcon)(({ theme }) => ({
-  color: theme.palette.primary.light,
-}));
 
-export const StyledTitleModal = styled(Typography)(({ theme }) => ({
-  fontSize: "20px",
-  fontWeight: "700",
-  color: theme.palette.primary.main,
-}));
 export const StyledModal = styled(Modal)(() => ({
   position: "absolute",
   top: "50px",
   left: "410px",
-}));
-
-export const StyledButtonClose = styled("button")(({ theme }) => ({
-  borderRadius: "1000px",
-  width: "32px",
-  height: "32px",
-  cursor: "pointer",
-  border: "none",
-  color: theme.palette.text.primary,
-  fontSize: "16px",
-}));
-
-export const StyledForm = styled("form")(({ theme }) => ({
-  width: "100%",
-  paddingTop: theme.spacing(3),
-}));
-
-export const StyledInputName = styled("input")(({ theme }) => ({
-  width: "572px",
-  padding: theme.spacing(0, 2),
-  borderRadius: "1000px",
-  marginTop: "3px",
-  border: `1px solid ${theme.palette.primary.contrastText}`,
 }));
 
 export const StyledInputDes = styled("input")(({ theme }) => ({
@@ -165,63 +104,6 @@ export const StyledInputDes = styled("input")(({ theme }) => ({
   padding: "12px 0px 100px 12px",
   border: `1px solid ${theme.palette.primary.contrastText}`,
   textAlign: "start",
-}));
-
-export const StyledBoxButtonModal = styled(Box)(() => ({
-  position: "absolute",
-  top: "430px",
-  right: "0px",
-  display: "flex",
-  gap: "16px",
-}));
-
-export const StyledBtnCancel = styled(Button)(({ theme }) => ({
-  width: "87px",
-  height: "40",
-  border: `1px solid ${theme.palette.primary.main}`,
-  fontSize: "12px",
-  fontWeight: "700",
-  padding: theme.spacing(1, 3),
-  textAlign: "center",
-  borderRadius: "1000px",
-}));
-
-export const StyledBtnCreate = styled(Button)(({ theme }) => ({
-  width: "87px",
-  height: "40",
-  border: "none",
-  fontSize: "12px",
-  fontWeight: "700",
-  padding: theme.spacing(1, 3),
-  textAlign: "center",
-  borderRadius: "1000px",
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.background.paper,
-}));
-
-export const StyledContentError = styled(Typography)(({ theme }) => ({
-  fontSize: "16px",
-  color: theme.palette.error.main,
-  textAlign: "center",
-}));
-
-export const StyledBoxHeader = styled(Box)(() => ({
-  display: "flex",
-  justifyContent: "space-between",
-}));
-
-export const StyledModalHeaderContainer = styled(Box)(({ theme }) => ({
-  backgroundColor: theme.palette.background.paper,
-  borderRadius: theme.spacing(2),
-  width: "620px",
-  height: "580px",
-  border: "none",
-  padding: "26px 24px",
-  // position: "relative",
-}));
-
-export const StyledBoxDes = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(4),
 }));
 
 export const StyledRadioStatus = styled(RadioGroup)(({ theme }) => ({
@@ -245,14 +127,4 @@ export const StyleInputNumberPhone = styled(MuiTelInput)(({ theme }) => ({
     fontSize: "16px",
     textAlign: "center",
   },
-}));
-export const StyledEditIcon = styled(EditIcon)(() => ({
-  width: "20px",
-  height: "20px",
-  marginRight: "5px",
-}));
-export const StyledDeleteIcon = styled(DeleteIcon)(() => ({
-  width: "20px",
-  height: "20px",
-  marginRight: "5px",
 }));

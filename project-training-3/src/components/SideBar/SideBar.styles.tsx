@@ -40,20 +40,20 @@ export const StyledButton = styled("button")(({ theme }) => ({
   position: "relative",
 }));
 
-export const StyledButtonUser = styled("button")<{ styleActive: boolean }>(
-  ({ theme, styleActive }) => ({
-    display: "flex",
-    padding: "20px 0 20px 24px",
-    gap: theme.spacing(2),
-    width: "100%",
-    backgroundColor: "#10182B",
-    color: styleActive ? theme.palette.error.main : "#94999C",
-    border: "none",
-    cursor: "pointer",
-    textAlign: "center",
-    position: "relative",
-  })
-);
+export const StyledButtonUser = styled("button")<{
+  styleActive: boolean | undefined;
+}>(({ theme, styleActive }) => ({
+  display: "flex",
+  padding: "20px 0 20px 24px",
+  gap: theme.spacing(2),
+  width: "100%",
+  backgroundColor: "#10182B",
+  color: styleActive ? theme.palette.error.main : "#94999C",
+  border: "none",
+  cursor: "pointer",
+  textAlign: "center",
+  position: "relative",
+}));
 
 export const StyledDirectionIcon = styled(ChevronRightOutlinedIcon)(() => ({
   width: "24px",

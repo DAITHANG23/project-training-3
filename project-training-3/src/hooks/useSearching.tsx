@@ -13,6 +13,10 @@ export const useSearching = (): [
     const value = event.target.value;
 
     if (!setSearch) return;
+
+    if (typingTimeoutRef.current) {
+      clearTimeout(typingTimeoutRef.current);
+    }
     typingTimeoutRef.current = setTimeout(() => {
       setSearch(value);
     }, 0);

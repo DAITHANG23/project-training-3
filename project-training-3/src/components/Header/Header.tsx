@@ -18,9 +18,10 @@ import {
 import { useState } from "react";
 
 interface HeaderProps {
-  page?: number;
+  title?: string;
+  image: string;
 }
-const Header = ({ page }: HeaderProps) => {
+const Header = ({ title, image }: HeaderProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -34,27 +35,10 @@ const Header = ({ page }: HeaderProps) => {
   const id = open ? "simple-popover" : undefined;
   return (
     <StyledHeaderContainer>
-      {page === 1 ? (
-        <StyledUserContainer>
-          <img
-            src="./images/user.png"
-            alt="user"
-            width={"36px"}
-            height={"36px"}
-          />
-          <StyledTitle>Users</StyledTitle>
-        </StyledUserContainer>
-      ) : (
-        <StyledUserContainer>
-          <img
-            src="./images/privacy.png"
-            alt="user"
-            width={"36px"}
-            height={"36px"}
-          />
-          <StyledTitle>Role & Permission</StyledTitle>
-        </StyledUserContainer>
-      )}
+      <StyledUserContainer>
+        <img src={image} alt="user" width={"36px"} height={"36px"} />
+        <StyledTitle>{title}</StyledTitle>
+      </StyledUserContainer>
 
       <StyledLogin>
         <StyledSearch>
