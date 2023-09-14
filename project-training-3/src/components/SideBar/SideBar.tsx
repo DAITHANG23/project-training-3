@@ -12,8 +12,10 @@ import {
   StyledDotIcon,
 } from "@/components/SideBar/SideBar.styles";
 import { useNavigate } from "react-router-dom";
-
-const SideBar = () => {
+interface SideBarProps {
+  onChoosePage: (value: string) => void;
+}
+const SideBar = ({ onChoosePage }: SideBarProps) => {
   const [isChooseUserPage, setIsChooseUserPage] = useState<boolean>(true);
   const [isChooseRolePage, setIsChooseRolePage] = useState<boolean>(false);
 
@@ -22,12 +24,14 @@ const SideBar = () => {
   const onChooseUserPage = () => {
     setIsChooseUserPage(true);
     setIsChooseRolePage(false);
+    onChoosePage("user");
     navigate("/users");
   };
 
   const onChooseRolePage = () => {
     setIsChooseRolePage(true);
     setIsChooseUserPage(false);
+    onChoosePage("role");
     navigate("/roles");
   };
 

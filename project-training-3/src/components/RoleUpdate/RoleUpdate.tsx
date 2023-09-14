@@ -40,10 +40,6 @@ import {
 import { useRoleUpdate, useRoleUpdateItem } from "@/hooks/useFetch";
 import { useNavigate, useParams } from "react-router-dom";
 
-interface RoleUpdateProps {
-  roleUpdated: string;
-}
-
 const RoleUpdate = () => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
   const [open, setOpen] = useState(false);
@@ -52,7 +48,7 @@ const RoleUpdate = () => {
   const idRole = params.id;
   const { mutate: updateRole } = useRoleUpdate(idRole);
   const { data, isLoading, error } = useRoleUpdateItem(idRole);
-  const [rolesUpdateList, setRolesUpdateList] = useState<any>();
+  const [rolesUpdateList, setRolesUpdateList] = useState({});
   const navigate = useNavigate();
 
   // const elementsData = [
@@ -89,20 +85,20 @@ const RoleUpdate = () => {
   console.log("rolesUpdateList", rolesUpdateList);
   const { handleSubmit, control } = useForm();
 
-  // useEffect(() => {
-  //   if (data) {
-  //     //setRolesUpdateList(data);
-  //   }
-  // }, [data]);
+  useEffect(() => {
+    if (data) {
+      //setRolesUpdateList(data);
+    }
+  }, [data]);
 
-  // if (isLoading) return <>{"Loading..."}</>;
-  // if (error instanceof Error)
-  //   return <>{"An error has occurred: " + error.message}</>;
+  if (isLoading) return <>{"Loading..."}</>;
+  if (error instanceof Error)
+    return <>{"An error has occurred: " + error.message}</>;
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
-    const roleItem = data;
     setRolesUpdateList(data);
-    updateRole(idRole, roleItem);
+
+    updateRole(idRole, data);
     navigate("/roles");
   });
 
@@ -110,8 +106,9 @@ const RoleUpdate = () => {
     const elementsFeature = ["Add", "Edit", "View"];
 
     const TableEdit = elementsFeature.map((elFeature) => {
+      const nameEl = `${elFeature}${el}`;
       return (
-        <StyledTableRowTitle key={`${elFeature}${el}`}>
+        <StyledTableRowTitle key={nameEl}>
           <StyledTableTitle>
             {elFeature} {el}
           </StyledTableTitle>
@@ -125,7 +122,7 @@ const RoleUpdate = () => {
                   },
                 }}
                 control={control}
-                name={`${elFeature}${el}`}
+                name={nameEl}
                 render={({ field }) => (
                   <StyledRadioGroup
                     {...field}
@@ -134,7 +131,7 @@ const RoleUpdate = () => {
                   >
                     <FormControlLabel
                       value="Yes"
-                      //checked={data.}
+                      //checked={rolesUpdateList.name}
                       control={
                         <Radio
                           checkedIcon={<BpCheckedIcon />}
@@ -146,6 +143,7 @@ const RoleUpdate = () => {
 
                     <FormControlLabel
                       value="No"
+                      //checked={rolesUpdateList.name}
                       control={
                         <Radio
                           checkedIcon={<BpCheckedIcon />}
@@ -214,6 +212,9 @@ const RoleUpdate = () => {
             <StyledTitleActive> role</StyledTitleActive>
           </StyledBoxTitle>
 
+          {/* <Link to="/roles">
+            <StyledButton type="submit">SAVE</StyledButton>
+          </Link> */}
           <StyledButton type="submit">SAVE</StyledButton>
         </StyledBoxHeader>
 

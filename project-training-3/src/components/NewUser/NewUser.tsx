@@ -17,7 +17,7 @@ import {
 } from "@/components/NewUser/NewUser.styles";
 import { Users, useCreateUser } from "@/hooks/useFetch";
 import { useForm, Controller } from "react-hook-form";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface NewUsersProp {
   data?: Users[];
@@ -67,7 +67,7 @@ const NewUser = ({ data }: NewUsersProp) => {
     };
     createUser(newUser);
     reset();
-    navigate("../");
+    //navigate("../");
   });
   return (
     <StyledModalHeaderContainer>
@@ -96,6 +96,7 @@ const NewUser = ({ data }: NewUsersProp) => {
               type="text"
               id="role"
               placeholder="Staff"
+              // defaultValue={}
               {...register("role", {
                 required: {
                   value: true,

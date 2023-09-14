@@ -14,8 +14,8 @@ import {
   StyledBoxButton,
   StyledModal,
 } from "@/components/TableListUser/TableListUser.styles";
-import { useUsers, Users, Status, UseUser } from "@/hooks/useFetch";
-
+import { useUsers, Users, Status } from "@/hooks/useFetch";
+import { Order } from "@/hooks/useSortingTable";
 import { useSortingTable } from "@/hooks/useSortingTable";
 import { usePaging } from "@/hooks/usePaging";
 
@@ -60,7 +60,12 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
     oneOderDirection,
     valueToOrderBy,
   ] = useSortingTable();
-  const { data, error, isLoading } = useUsers(page, rowsPerPage);
+  const sort = oneOderDirection;
+  const { data, error, isLoading, isFetching } = useUsers(
+    page,
+    rowsPerPage,
+    sort
+  );
 
   useEffect(() => {
     if (data) {
@@ -69,7 +74,13 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
     }
   }, [data, onSetData]);
 
-  if (isLoading) return <>{"Loading..."}</>;
+  if (isFetching) {
+    console.log("isFetching", isFetching);
+  }
+  if (isLoading) {
+    console.log("isLoading", isLoading);
+  }
+  if (isLoading) return <>{"Loading..."} </>;
 
   if (error instanceof Error)
     return <>{"An error has occurred: " + error.message}</>;
@@ -141,13 +152,7 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
               </TableSortLabel>
             </StyledTitleRowName>
             <StyledTitleRow>
-              <TableSortLabel
-                // active={valueToOrderBy === "name"}
-                // direction={
-                //   valueToOrderBy === "name" ? oneOderDirection : "asc"
-                // }
-                onClick={() => createSortHandle("role")}
-              >
+              <TableSortLabel onClick={() => createSortHandle("role")}>
                 Role
               </TableSortLabel>
             </StyledTitleRow>

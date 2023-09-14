@@ -19,7 +19,7 @@ export const handlers = [
       const firstPageIndex = (pageItem - 1) * rowPerPage;
       const lastPageIndex = firstPageIndex + rowPerPage;
       const usersPerPage = users.slice(firstPageIndex, lastPageIndex);
-      console.log("usersPerPage", usersPerPage);
+
       users = usersPerPage;
     }
 
@@ -32,6 +32,7 @@ export const handlers = [
       });
       users = usersList;
     }
+
     if (search === null && users.length < usersListTotal.length) {
       users = usersListTotal;
     }
@@ -66,6 +67,26 @@ export const handlers = [
 
     setTimeout(() => {
       res(ctx.json({ user }));
+    }, 1000);
+  }),
+
+  rest.delete("/users/:id", async (req, res, ctx) => {
+    const { id } = req.params;
+
+    const userIndex = users.findIndex((user) => user.id === +id);
+    console.log("id", id, "eventIndex", userIndex);
+    if (userIndex === -1) {
+      return res(
+        ctx.status(404),
+        ctx.json({ message: `For the id ${id}, no user could be found.` })
+      );
+    }
+    if (userIndex >= 0) {
+      users.splice(userIndex, 1);
+    }
+
+    setTimeout(() => {
+      res(ctx.json({ users, message: "User deleted" }));
     }, 1000);
   }),
 

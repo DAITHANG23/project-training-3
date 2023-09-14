@@ -15,7 +15,8 @@ import { BrowserRouter } from "react-router-dom";
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      staleTime: Infinity,
+      staleTime: 6000,
+      refetchOnWindowFocus: true,
     },
   },
 });

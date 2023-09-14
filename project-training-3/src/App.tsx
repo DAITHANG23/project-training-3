@@ -11,55 +11,35 @@ import SideBar from "./components/SideBar/SideBar";
 import { Route, Routes } from "react-router-dom";
 import { Users } from "@/hooks/useFetch";
 import { useState } from "react";
-// const router = createBrowserRouter([
-//   { path: "/", element: <Navigate to="/users" /> },
-//   {
-//     path: "/users",
-//     element: <TableListUser />,
-//     children: [
-//       {
-//         path: "/users/new",
-//         element: <NewUser />,
-//       },
-//       {
-//         path: "/users/:id",
-//         element: <UserItem />,
-//       },
-//       {
-//         path: "/users/:id/edit",
-//         element: <EditUser />,
-//       },
-//     ],
-//   },
 
-//   {
-//     path: "/roles",
-//     element: <RolePermission />,
-//     children: [
-//       {
-//         path: "/roles/new",
-//         element: <NewRole />,
-//       },
-//     ],
-//   },
-//   {
-//     path: "/roles/:id",
-//     element: <RoleUpdate />,
-//   },
-// ]);
 function App() {
   const [data, setData] = useState<Users[] | undefined>();
-
+  const [onPage, setOnPage] = useState("users");
   const onSetData = (data: Users[]) => {
     setData(data);
   };
 
   const onSetOpen = (data: boolean) => {};
+
+  const onChoosePage = (value: string) => {
+    setOnPage(value);
+  };
+
+  let titleHeader = "Users";
+  let imageHeader = "./images/user.png";
+  if (onPage === "user") {
+    titleHeader = "Users";
+    imageHeader = "./images/user.png";
+  } else if (onPage === "role") {
+    titleHeader = "Role & Permission";
+    imageHeader = "../images/privacy.png";
+  }
+
   return (
     <StyledBoxContainer>
-      <SideBar />
+      <SideBar onChoosePage={onChoosePage} />
       <StyledBodyContainer>
-        <Header title="Role & Permission" image="../images/privacy.png" />
+        <Header title={titleHeader} image={imageHeader} />
         <Routes>
           <Route path="/" element={<Navigate to="/users" />} />
           <Route

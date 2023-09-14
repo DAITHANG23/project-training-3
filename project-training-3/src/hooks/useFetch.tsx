@@ -6,10 +6,13 @@ import {
   createRoles,
   getRoleItem,
   getUsersSearch,
+  getUserItem,
+  removeUserItem,
 } from "@/api";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { useNavigate } from "react-router-dom";
 
+import { Order } from "@/hooks/useSortingTable";
+import { useNavigate } from "react-router-dom";
 export type Status = "Active" | "Suspended";
 export interface Users {
   id: number;
@@ -36,10 +39,15 @@ export interface UseUserSearch {
 
 export interface UseUser {
   signal?: AbortSignal;
-  page?: number;
-  rowPerPage?: number;
+  page: number;
+  rowPerPage: number;
+  oneOderDirection: Order;
 }
 
+export interface UserItem {
+  signal?: AbortSignal;
+  id: string;
+}
 const QUERY_KEY = {
   useGetUsers: "fetchData",
   useGetRoles: ["fetchDataRoles"],
@@ -47,13 +55,24 @@ const QUERY_KEY = {
   useGetUserSearch: "fetchUserSearch",
 };
 
-export const useUsers = (page: number, rowPerPage: number) => {
+export const useUsers = (
+  page: number,
+  rowPerPage: number,
+  oneOderDirection: Order
+) => {
   const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
-    [QUERY_KEY.useGetUsers, { page: page, rowPerPage: rowPerPage }],
-    ({ signal }) => getUsers({ signal, page, rowPerPage }),
+    [
+      (QUERY_KEY.useGetUsers,
+      {
+        page: page,
+        rowPerPage: rowPerPage,
+        oneOderDirection: oneOderDirection,
+      }),
+    ],
+    ({ signal }) => getUsers({ signal, page, rowPerPage, oneOderDirection }),
     {
       keepPreviousData: true,
-      staleTime: 10 * 1000,
+      //staleTime: 10 * 1000,
     }
   );
 
@@ -80,17 +99,59 @@ export const useUsersSearch = (searchTerm: string) => {
 };
 
 export const useCreateUser = () => {
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   return useMutation(createUsers, {
     onSuccess: (data) => {
       // queryClient.setQueryData(QUERY_KEY.useGetUsers, (oldQueryData: any) => {
       //   return [...oldQueryData, data];
       // });
-      queryClient.invalidateQueries("fetchData");
+      queryClient.invalidateQueries({ queryKey: ["fetchData"] });
+      navigate("../");
     },
   });
 };
+
+export const useUser = (id: string) => {
+  const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
+    [
+      (QUERY_KEY.useGetUsers,
+      {
+        id: id,
+      }),
+    ],
+    ({ signal }) => getUserItem({ signal, id }),
+    {
+      keepPreviousData: true,
+      staleTime: 10 * 1000,
+    }
+  );
+
+  return { data, isLoading, error, isFetching, refetch };
+};
+
+export const useRemoveUser = () => {
+  const queryClient = useQueryClient();
+  const { mutate, isError, isLoading, error } = useMutation({
+    mutationFn: (id: string) => removeUserItem(id),
+    onSuccess: (_, id) => {
+      queryClient.invalidateQueries({
+        queryKey: ["fetchData"],
+        exact: true,
+      });
+    },
+  });
+  return { mutate, isError, isLoading, error };
+};
+
+// export const useRemoveUser = () => {
+//   const queryClient = useQueryClient();
+//   return useMutation(removeUserItem, {
+//     onSuccess: (data) => {
+//       queryClient.invalidateQueries({ queryKey: ["fetchData"], exact: true });
+//     },
+//   });
+// };
 
 export const useRoles = () => {
   const { data, isLoading, error, refetch } = useQuery<Roles[]>(

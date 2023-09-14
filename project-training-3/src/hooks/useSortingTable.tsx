@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Users } from "@/hooks/useFetch";
-type Order = "asc" | "desc";
+export type Order = "asc" | "desc";
 
 export const useSortingTable = (): [
   (property: keyof Users) => void,
