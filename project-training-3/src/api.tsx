@@ -7,6 +7,11 @@ import {
   UserItem,
 } from "@/hooks/useFetch";
 
+export interface GetCreateRoleUpdate {
+  id: string | undefined;
+  dataForm: any;
+}
+
 axios.defaults.baseURL = "http://localhost:3000";
 
 export const getUsers = async ({
@@ -43,11 +48,15 @@ export const getUsersSearch = async ({ signal, searchTerm }: UseUserSearch) => {
 
 export const createUsers = async (user: Users) => {
   const res = await axios.post("/users/new", user);
+
   return res.data.user;
 };
 
 export const getUserItem = async ({ signal, id }: UserItem) => {
+  console.log("idInAPI:", typeof id);
   const res = await axios.get(`/users/${id}`, { signal: signal });
+
+  console.log("getUserItem:", res);
   return res.data.user;
 };
 
@@ -71,12 +80,21 @@ export const createRoles = async (role: Roles) => {
   return res.data.role;
 };
 
-export const getRoleItem = async (id: string | undefined) => {
-  const res = await axios.get(`/roles/${id}`);
-  return res.data?.roleUpdates;
+export const getRoleItem = async ({
+  id,
+  signal,
+}: {
+  id: string | undefined;
+  signal?: AbortSignal;
+}) => {
+  const res = await axios.get(`/roles/${id}`, { signal: signal });
+  return res.data.roleItemUpdate;
 };
 
-export const getRoleUpdate = async (id: string | undefined) => {
-  const res = await axios.post(`/roles/${id}`);
+export const createRoleUpdate = async ({
+  id,
+  dataForm,
+}: GetCreateRoleUpdate) => {
+  const res = await axios.post(`/roles/${id}`, dataForm);
   return res.data?.roleUpdates;
 };

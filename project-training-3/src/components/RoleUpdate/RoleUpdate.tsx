@@ -46,27 +46,11 @@ const RoleUpdate = () => {
   //const { data, error, isLoading, refetch } = useRoleUpdate();
   const params = useParams();
   const idRole = params.id;
-  const { mutate: updateRole } = useRoleUpdate(idRole);
+
   const { data, isLoading, error } = useRoleUpdateItem(idRole);
+  const { mutate: createRoleUpdate } = useRoleUpdate(idRole);
   const [rolesUpdateList, setRolesUpdateList] = useState({});
   const navigate = useNavigate();
-
-  // const elementsData = [
-  //   { title: "Add Dashboard", value: "" },
-  //   { title: "Add Reports", value: "" },
-  //   { title: "Add Alarm & Events", value: "" },
-  //   { title: "Add Sensors", value: "" },
-  //   { title: "Add Site configuration", value: "" },
-  //   { title: "Add Device configuration", value: "" },
-  //   { title: "Add Usermanagement", value: "" },
-  //   { title: "Add Dashboard", value: "" },
-  //   { title: "Add Reports", value: "" },
-  //   { title: "Add Alarm & Events", value: "" },
-  //   { title: "Add Sensors", value: "" },
-  //   { title: "Add Site configuration", value: "" },
-  //   { title: "Add Device configuration", value: "" },
-  //   { title: "Add Usermanagement", value: "" },
-  // ];
 
   const elements = [
     "Dashboard",
@@ -82,12 +66,12 @@ const RoleUpdate = () => {
     setCardIDOpen(id);
     setOpen(!open);
   };
-  console.log("rolesUpdateList", rolesUpdateList);
+
   const { handleSubmit, control } = useForm();
 
   useEffect(() => {
     if (data) {
-      //setRolesUpdateList(data);
+      setRolesUpdateList(data);
     }
   }, [data]);
 
@@ -96,11 +80,10 @@ const RoleUpdate = () => {
     return <>{"An error has occurred: " + error.message}</>;
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
-    setRolesUpdateList(data);
-
-    updateRole(idRole, data);
+    createRoleUpdate({ id: idRole, dataForm: data });
     navigate("/roles");
   });
+  console.log("data", data);
 
   const TableBodyContent = elements.map((el) => {
     const elementsFeature = ["Add", "Edit", "View"];

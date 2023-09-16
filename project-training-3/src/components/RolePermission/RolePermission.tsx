@@ -12,8 +12,8 @@ import {
 
 import { useRoles } from "@/hooks/useFetch";
 
-import RoleItem from "../RoleItem/RoleItem";
-import NewRole from "../NewRole/NewRole";
+import RoleItem from "@/components/RoleItem/RoleItem";
+import NewRole from "@/components/NewRole/NewRole";
 import { useNavigate } from "react-router-dom";
 
 interface Roles {

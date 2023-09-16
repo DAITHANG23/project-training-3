@@ -22,6 +22,16 @@ import { useNavigate } from "react-router-dom";
 interface NewUsersProp {
   data?: Users[];
 }
+
+export interface UserItem {
+  name: string;
+  role: string;
+  team: string;
+  status: string;
+  tel: string;
+  image: string;
+}
+
 const NewUser = ({ data }: NewUsersProp) => {
   const { mutate: createUser } = useCreateUser();
   // const [open, setOpen] = useState(false);

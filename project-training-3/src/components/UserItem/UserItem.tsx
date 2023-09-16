@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRemoveUser } from "@/hooks/useFetch";
 import {
   TableRow,
@@ -6,7 +6,6 @@ import {
   TableCell,
   Button,
   Popover,
-  Modal,
   Typography,
 } from "@mui/material";
 import {
@@ -21,8 +20,10 @@ import {
   StyledDeleteIcon,
   StyledModal,
   StyledBoxModal,
+  StyledModalEdit,
 } from "@/components/UserItem/UserItem.styles";
 import { useNavigate } from "react-router-dom";
+import EditUser from "@/components/EditUser/EditUser";
 
 interface UserItemProps {
   id: number;
@@ -49,13 +50,20 @@ export const UserItem = ({
 }: UserItemProps) => {
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
   const navigate = useNavigate();
-  const [isDeleting, setIsDeleting] = useState<boolean>(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const {
     mutate,
     isLoading: isLoadingDeletion,
     isError: isErrorDeleting,
     error: deleteError,
   } = useRemoveUser();
+
+  useEffect(() => {
+    if (isEditing) {
+      // navigate(`/users/${id}`);
+    }
+  }, [isEditing, navigate, id]);
 
   // remove user
   const onRemoveUserItem = () => {
@@ -64,14 +72,21 @@ export const UserItem = ({
 
   const handleDelete = (id: number) => {
     const idUser = String(id);
+
     mutate(idUser);
+
+    navigate("/users");
   };
 
   const handleStopDelete = () => {
     setIsDeleting(false);
   };
+
   // edit user
-  const onEditUserItem = (idItem: number) => {};
+  const onEditUserItem = (idItem: number) => {
+    setIsEditing(true);
+    navigate(`/users/${id}`);
+  };
 
   // popover item
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -81,71 +96,86 @@ export const UserItem = ({
   const handleClosePopover = () => {
     setAnchorEl(null);
   };
+
   const openPop = Boolean(anchorEl);
+
   const idPopItem = openPop ? "simple-popover" : undefined;
 
   return (
     <>
-      <StyledModal
-        open={isDeleting}
-        onClose={handleStopDelete}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <StyledBoxModal>
-          <Typography sx={{ fontSize: "24px" }}>Are you sure?</Typography>
-          <Typography>
-            Do you really want to delete this event? This action cannot be
-            undone.
-          </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "flex-end",
-              alignItems: "center",
-              gap: "2rem",
-            }}
-          >
-            {isLoadingDeletion && <p>Deleting, please wait...</p>}
-            {!isLoadingDeletion && (
-              <>
-                <Button
-                  sx={{
-                    font: "inherit",
-                    cursor: "pointer",
-                    border: "none",
-                    backgroundColor: "transparent",
-                    color: "#3f0c26",
-                    borderRadius: "4px",
-                    fontWeight: "bold",
-                    textDecoration: "none",
-                  }}
-                  onClick={handleStopDelete}
-                >
-                  Cancel
-                </Button>
-                <Button
-                  sx={{
-                    font: "inherit",
-                    cursor: "pointer",
-                    padding: "0.5rem 1.5rem",
-                    border: "none",
-                    backgroundColor: "#530F66",
-                    color: "#fff",
-                    borderRadius: "4px",
-                    boxShadow: "0 2px 4px rgba(0, 0, 0, 0.26)",
-                    fontWeight: "bold",
-                    textDecoration: "none",
-                  }}
-                  onClick={() => handleDelete(id)}
-                >
-                  Delete
-                </Button>
-              </>
-            )}
-          </Box>
-        </StyledBoxModal>
-      </StyledModal>
+      {isEditing && (
+        <StyledModalEdit
+          open={isEditing}
+          onClose={handleStopDelete}
+          // aria-labelledby="modal-modal-title"
+          // aria-describedby="modal-modal-description"
+        >
+          <EditUser />
+        </StyledModalEdit>
+      )}
+      {isDeleting && (
+        <StyledModal
+          open={isDeleting}
+          onClose={handleStopDelete}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <StyledBoxModal>
+            <Typography sx={{ fontSize: "24px" }}>Are you sure?</Typography>
+            <Typography>
+              Do you really want to delete this event? This action cannot be
+              undone.
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "flex-end",
+                alignItems: "center",
+                gap: "2rem",
+              }}
+            >
+              {isLoadingDeletion && <p>Deleting, please wait...</p>}
+              {!isLoadingDeletion && (
+                <>
+                  <Button
+                    sx={{
+                      font: "inherit",
+                      cursor: "pointer",
+                      border: "none",
+                      backgroundColor: "transparent",
+                      color: "#3f0c26",
+                      borderRadius: "4px",
+                      fontWeight: "bold",
+                      textDecoration: "none",
+                    }}
+                    onClick={handleStopDelete}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    sx={{
+                      font: "inherit",
+                      cursor: "pointer",
+                      padding: "0.5rem 1.5rem",
+                      border: "none",
+                      backgroundColor: "#530F66",
+                      color: "#fff",
+                      borderRadius: "4px",
+                      boxShadow: "0 2px 4px rgba(0, 0, 0, 0.26)",
+                      fontWeight: "bold",
+                      textDecoration: "none",
+                    }}
+                    onClick={() => handleDelete(id)}
+                  >
+                    Delete
+                  </Button>
+                </>
+              )}
+            </Box>
+          </StyledBoxModal>
+        </StyledModal>
+      )}
+
       <TableRow key={id}>
         <StyledTableCellName>
           <img
@@ -183,7 +213,7 @@ export const UserItem = ({
             }}
           >
             <Box>
-              <Button onClick={() => navigate(`/users/${id}/edit`)}>
+              <Button onClick={() => onEditUserItem(id)}>
                 <StyledEditIcon />
                 Edit
               </Button>

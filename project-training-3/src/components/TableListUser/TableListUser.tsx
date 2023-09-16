@@ -15,13 +15,13 @@ import {
   StyledModal,
 } from "@/components/TableListUser/TableListUser.styles";
 import { useUsers, Users, Status } from "@/hooks/useFetch";
-import { Order } from "@/hooks/useSortingTable";
+
 import { useSortingTable } from "@/hooks/useSortingTable";
 import { usePaging } from "@/hooks/usePaging";
 
-import NewUser from "../NewUser/NewUser";
+import NewUser from "@/components/NewUser/NewUser";
 import { useNavigate } from "react-router-dom";
-import { UserItem } from "../UserItem/UserItem";
+import { UserItem } from "@/components/UserItem/UserItem";
 
 interface TableListUserProps {
   onSetData: (data: Users[]) => void;
@@ -70,16 +70,19 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
   useEffect(() => {
     if (data) {
       setUsers(data);
+
       onSetData(data);
     }
   }, [data, onSetData]);
 
-  if (isFetching) {
-    console.log("isFetching", isFetching);
-  }
-  if (isLoading) {
-    console.log("isLoading", isLoading);
-  }
+  // if (isFetching) {
+  //   console.log("isFetching", isFetching);
+  // }
+
+  // if (isLoading) {
+  //   console.log("isLoading", isLoading);
+  // }
+
   if (isLoading) return <>{"Loading..."} </>;
 
   if (error instanceof Error)
@@ -89,16 +92,19 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
 
   const onOpenModal = () => {
     setOpen(true);
+
     navigate("/users/new");
   };
 
   const TableListUsers = sortedTableRow(
     statusUser,
+
     getComparator(oneOderDirection, valueToOrderBy)
   )
     ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     .map((user) => {
       const { id, name, image, tel, status, role, team, date, time } = user;
+
       return (
         <UserItem
           id={id}

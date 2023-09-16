@@ -1,7 +1,7 @@
 import {
   getUsers,
   getRoles,
-  getRoleUpdate,
+  createRoleUpdate,
   createUsers,
   createRoles,
   getRoleItem,
@@ -13,7 +13,9 @@ import { useQuery, useMutation, useQueryClient } from "react-query";
 
 import { Order } from "@/hooks/useSortingTable";
 import { useNavigate } from "react-router-dom";
+
 export type Status = "Active" | "Suspended";
+
 export interface Users {
   id: number;
   tel: string;
@@ -28,36 +30,48 @@ export interface Users {
 
 export interface Roles {
   id: string;
+
   role: string;
+
   describe: string;
 }
 
 export interface UseUserSearch {
   searchTerm: string;
+
   signal?: AbortSignal;
 }
 
 export interface UseUser {
   signal?: AbortSignal;
+
   page: number;
+
   rowPerPage: number;
+
   oneOderDirection: Order;
 }
 
 export interface UserItem {
   signal?: AbortSignal;
-  id: string;
+  id?: string;
 }
+
 const QUERY_KEY = {
   useGetUsers: "fetchData",
+
   useGetRoles: ["fetchDataRoles"],
+
   useGetRoleUpdate: "fetchDataRoleUpdate",
+
   useGetUserSearch: "fetchUserSearch",
 };
 
 export const useUsers = (
   page: number,
+
   rowPerPage: number,
+
   oneOderDirection: Order
 ) => {
   const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
@@ -65,11 +79,15 @@ export const useUsers = (
       (QUERY_KEY.useGetUsers,
       {
         page: page,
+
         rowPerPage: rowPerPage,
+
         oneOderDirection: oneOderDirection,
       }),
     ],
+
     ({ signal }) => getUsers({ signal, page, rowPerPage, oneOderDirection }),
+
     {
       keepPreviousData: true,
       //staleTime: 10 * 1000,
@@ -82,16 +100,17 @@ export const useUsers = (
 export const useUsersSearch = (searchTerm: string) => {
   const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
     [QUERY_KEY.useGetUserSearch, { search: searchTerm }],
+
     ({ signal }) => getUsersSearch({ signal, searchTerm }),
 
     {
-      //enabled: searchTerm !== undefined,
+      enabled: searchTerm !== undefined,
+
       keepPreviousData: true,
-      // refetchOnMount: true,
-      // refetchOnReconnect: false,
-      // staleTime: Infinity,
+
       staleTime: 6 * 1000,
-      cacheTime: 10000,
+
+      cacheTime: 5000,
     }
   );
 
@@ -100,19 +119,22 @@ export const useUsersSearch = (searchTerm: string) => {
 
 export const useCreateUser = () => {
   const queryClient = useQueryClient();
+
   const navigate = useNavigate();
+
   return useMutation(createUsers, {
     onSuccess: (data) => {
       // queryClient.setQueryData(QUERY_KEY.useGetUsers, (oldQueryData: any) => {
       //   return [...oldQueryData, data];
       // });
       queryClient.invalidateQueries({ queryKey: ["fetchData"] });
+
       navigate("../");
     },
   });
 };
 
-export const useUser = (id: string) => {
+export const useUser = (id: string | undefined) => {
   const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
     [
       (QUERY_KEY.useGetUsers,
@@ -121,54 +143,57 @@ export const useUser = (id: string) => {
       }),
     ],
     ({ signal }) => getUserItem({ signal, id }),
+
     {
+      enabled: id !== undefined,
       keepPreviousData: true,
       staleTime: 10 * 1000,
     }
   );
-
+  console.log("dataFetch:", data);
   return { data, isLoading, error, isFetching, refetch };
 };
 
 export const useRemoveUser = () => {
+  const navigate = useNavigate();
+
   const queryClient = useQueryClient();
+
   const { mutate, isError, isLoading, error } = useMutation({
-    mutationFn: (id: string) => removeUserItem(id),
+    mutationFn: removeUserItem,
+
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({
         queryKey: ["fetchData"],
         exact: true,
+        refetchActive: true,
       });
+
+      navigate("../");
     },
   });
+
   return { mutate, isError, isLoading, error };
 };
-
-// export const useRemoveUser = () => {
-//   const queryClient = useQueryClient();
-//   return useMutation(removeUserItem, {
-//     onSuccess: (data) => {
-//       queryClient.invalidateQueries({ queryKey: ["fetchData"], exact: true });
-//     },
-//   });
-// };
 
 export const useRoles = () => {
   const { data, isLoading, error, refetch } = useQuery<Roles[]>(
     QUERY_KEY.useGetRoles,
     getRoles,
+
     {
       keepPreviousData: true,
-      // refetchOnMount: false,
-      // refetchOnReconnect: false,
+
       staleTime: 5000,
     }
   );
+
   return { data, isLoading, error, refetch };
 };
 
 export const useCreateRole = () => {
   const queryClient = useQueryClient();
+
   return useMutation(createRoles, {
     onSuccess: (data) => {
       // queryClient.setQueryData("fetchDataRoles", (oldQueryData: any) => {
@@ -181,53 +206,33 @@ export const useCreateRole = () => {
 };
 
 export const useRoleUpdateItem = (id: string | undefined) => {
-  const { data, isLoading, error, refetch } = useQuery<string[]>(
-    [QUERY_KEY.useGetRoleUpdate, id],
-    () => getRoleItem(id),
+  const { data, isLoading, error, isFetching, refetch } = useQuery<string[]>(
+    [
+      (QUERY_KEY.useGetRoleUpdate,
+      {
+        id: id,
+      }),
+    ],
+
+    ({ signal }) => getRoleItem({ signal, id }),
+
     {
       keepPreviousData: true,
-      // refetchOnMount: false,
-      // refetchOnReconnect: false,
-      staleTime: 5000,
+      staleTime: 10 * 1000,
     }
   );
-  return { data, isLoading, error, refetch };
+
+  return { data, isLoading, error, isFetching, refetch };
 };
 
-export const useRoleUpdate = (idRole: string | undefined) => {
+export const useRoleUpdate = (id: string | undefined) => {
   const queryClient = useQueryClient();
-  return useMutation(getRoleUpdate, {
+
+  return useMutation({
+    mutationFn: createRoleUpdate,
+
     onSuccess: (data) => {
-      queryClient.invalidateQueries([QUERY_KEY.useGetRoleUpdate, idRole], data);
+      queryClient.invalidateQueries([QUERY_KEY.useGetRoleUpdate, id]);
     },
   });
 };
-
-// export const useRoleUpdate = (idRole: string | undefined) => {
-//   const queryClient = useQueryClient();
-
-//   return useMutation(getRoleUpdate, {
-//     onMutate: async (data) => {
-//       const newEvent = data;
-
-//       await queryClient.cancelQueries([QUERY_KEY.useGetRoleUpdate, idRole]);
-//       const previousEvent = queryClient.getQueryData([
-//         QUERY_KEY.useGetRoleUpdate,
-//         idRole,
-//       ]);
-
-//       queryClient.setQueryData([QUERY_KEY.useGetRoleUpdate, idRole], newEvent);
-
-//       return { previousEvent };
-//     },
-//     onError: (error, data, context) => {
-//       queryClient.setQueryData(
-//         [QUERY_KEY.useGetRoleUpdate, idRole],
-//         context?.previousEvent
-//       );
-//     },
-//     onSettled: () => {
-//       queryClient.invalidateQueries([QUERY_KEY.useGetRoleUpdate, idRole]);
-//     },
-//   });
-// };

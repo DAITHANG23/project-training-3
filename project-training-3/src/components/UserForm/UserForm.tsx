@@ -1,5 +1,5 @@
-import { useNavigate, useParams } from "react-router-dom";
-
+import React, { useState, useEffect } from "react";
+import { FormControl, FormControlLabel, Radio } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import {
   StyledModalHeaderContainer,
@@ -15,23 +15,31 @@ import {
   StyledBoxButtonModal,
   StyledBtnCancel,
   StyledBtnCreate,
-} from "@/components/EditUser/EditUser.styles";
-import { useUser } from "@/hooks/useFetch";
-import { FormControl, FormControlLabel, Radio } from "@mui/material";
-import UserForm from "../UserForm/UserForm";
+} from "@/components/UserForm/UserForm.styles";
+import { useNavigate } from "react-router-dom";
+import { Users, useCreateUser } from "@/hooks/useFetch";
+import { UserItem } from "@/components/NewUser/NewUser";
+interface ChildrenProps {
+  inputData?: Users[];
+  children?: string | JSX.Element | JSX.Element[];
+  onSubmit: (value: UserItem) => void;
+}
+const UserForm = ({ inputData, children, onSubmit }: ChildrenProps) => {
+  //const { mutate: createUser } = useCreateUser();
 
-const EditUser = () => {
+  //const [users, setUsers] = useState<Users[]>([]);
+
   const navigate = useNavigate();
 
-  const params = useParams();
+  // useEffect(() => {
+  //   if (inputData) {
+  //     setUsers(inputData);
+  //   }
+  // }, [inputData]);
 
-  const idUser: string | undefined = params.id;
-
-  const { data, isLoading, error } = useUser(idUser);
-
-  console.log("data", data);
-
-  const handleClose = () => {};
+  const handleClose = () => {
+    navigate("../");
+  };
 
   const { register, handleSubmit, formState, reset, control } = useForm({
     defaultValues: {
@@ -68,16 +76,15 @@ const EditUser = () => {
     // };
 
     //createUser(newUser);
-    navigate("../");
+
+    onSubmit(userItem);
+
     reset();
   });
 
   return (
     <StyledModalHeaderContainer>
-      <StyledBoxHeader>
-        <StyledTitleModal>Update user</StyledTitleModal>
-        <StyledButtonClose onClick={handleClose}>x</StyledButtonClose>
-      </StyledBoxHeader>
+      <StyledBoxHeader>{children}</StyledBoxHeader>
       <StyledForm onSubmit={onFormSubmitCreateUserHandle}>
         <FormControl>
           <label htmlFor="name">Name</label>
@@ -200,7 +207,7 @@ const EditUser = () => {
 
           <StyledBoxButtonModal>
             <StyledBtnCancel onClick={handleClose}>CANCEL</StyledBtnCancel>
-            <StyledBtnCreate type="submit"> UPDATE</StyledBtnCreate>
+            <StyledBtnCreate type="submit">CREATE</StyledBtnCreate>
           </StyledBoxButtonModal>
         </FormControl>
       </StyledForm>
@@ -208,4 +215,4 @@ const EditUser = () => {
   );
 };
 
-export default EditUser;
+export default UserForm;

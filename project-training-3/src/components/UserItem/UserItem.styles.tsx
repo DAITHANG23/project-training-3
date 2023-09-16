@@ -77,3 +77,9 @@ export const StyledBoxModal = styled(Box)(() => ({
   margin: 0,
   padding: "2rem",
 }));
+
+export const StyledModalEdit = styled(Modal)(() => ({
+  position: "fixed",
+  top: "7vh",
+  left: "calc(50% - 15rem)",
+}));

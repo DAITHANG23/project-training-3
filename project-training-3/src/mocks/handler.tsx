@@ -2,22 +2,30 @@ import { rest } from "msw";
 import { Users, Roles } from "@/hooks/useFetch";
 
 let usersListTotal: Users[] = [];
+
 let users: Users[] = [];
+
 const roles: Roles[] = [];
-const roleUpdates: string[] = [];
+
+const roleUpdates: any[] = [];
 
 export const handlers = [
   rest.get("/users", (req, res, ctx) => {
     const search = req.url.searchParams.get("search");
+
     const page = Number(req.url.searchParams.get("page"));
+
     const rowPerPage = Number(req.url.searchParams.get("rowPerPage"));
 
     let pageItem = 0;
 
     if (page || rowPerPage) {
       pageItem = page + 1;
+
       const firstPageIndex = (pageItem - 1) * rowPerPage;
+
       const lastPageIndex = firstPageIndex + rowPerPage;
+
       const usersPerPage = users.slice(firstPageIndex, lastPageIndex);
 
       users = usersPerPage;
@@ -28,8 +36,10 @@ export const handlers = [
     if (search) {
       usersList = users.filter((user) => {
         const searchableText = `${user.name} ${user.role} ${user.team}  `;
+
         return searchableText.toLowerCase().includes(search.toLowerCase());
       });
+
       users = usersList;
     }
 
@@ -49,7 +59,9 @@ export const handlers = [
     const user = await req.json();
 
     users.push(user);
+
     usersListTotal.push(user);
+
     return res(ctx.status(201), ctx.json({ user }));
   }),
 
@@ -65,6 +77,8 @@ export const handlers = [
       );
     }
 
+    console.log("userItemHandler:", user);
+
     setTimeout(() => {
       res(ctx.json({ user }));
     }, 1000);
@@ -74,10 +88,11 @@ export const handlers = [
     const { id } = req.params;
 
     const userIndex = users.findIndex((user) => user.id === +id);
-    console.log("id", id, "eventIndex", userIndex);
+
     if (userIndex === -1) {
       return res(
         ctx.status(404),
+
         ctx.json({ message: `For the id ${id}, no user could be found.` })
       );
     }
@@ -86,19 +101,22 @@ export const handlers = [
     }
 
     setTimeout(() => {
-      res(ctx.json({ users, message: "User deleted" }));
+      res(ctx.json({ users: users, message: "User deleted" }));
     }, 1000);
   }),
 
   rest.post("/roles/new", async (req, res, ctx) => {
     const role = await req.json();
+
     roles.push(role);
+
     return res(ctx.status(201), ctx.json({ role }));
   }),
 
   rest.get("/roles", (req, res, ctx) => {
     return res(
       ctx.status(200),
+
       ctx.json({
         roles,
       })
@@ -107,16 +125,38 @@ export const handlers = [
 
   rest.post("/roles/:id", async (req, res, ctx) => {
     const roleUpdate = await req.json();
-    console.log(roleUpdate);
-    roleUpdates.push(roleUpdate);
-    return res(ctx.status(200), ctx.json({ roleUpdate }));
+
+    const { id } = req.params;
+
+    const newRoleUpdate = { ...roleUpdate, id: id };
+
+    roleUpdates.push(newRoleUpdate);
+
+    const roleIndex = roles.findIndex((role) => role.id === id);
+
+    if (roleIndex >= 0) {
+      roleUpdates[roleIndex] = {
+        id,
+
+        ...roleUpdate,
+      };
+    }
+
+    return res(
+      ctx.status(200),
+      ctx.json({ roleUpdate: roleUpdates[roleIndex] })
+    );
   }),
 
   rest.get("/roles/:id", (req, res, ctx) => {
+    const { id } = req.params;
+
+    const roleItemUpdate = roleUpdates.find((roleItem) => roleItem.id === id);
+
     return res(
       ctx.status(200),
       ctx.json({
-        roleUpdates,
+        roleItemUpdate: roleItemUpdate,
       })
     );
   }),

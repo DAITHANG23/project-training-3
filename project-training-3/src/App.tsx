@@ -14,7 +14,9 @@ import { useState } from "react";
 
 function App() {
   const [data, setData] = useState<Users[] | undefined>();
+
   const [onPage, setOnPage] = useState("users");
+
   const onSetData = (data: Users[]) => {
     setData(data);
   };
@@ -26,12 +28,16 @@ function App() {
   };
 
   let titleHeader = "Users";
+
   let imageHeader = "./images/user.png";
+
   if (onPage === "user") {
     titleHeader = "Users";
+
     imageHeader = "./images/user.png";
   } else if (onPage === "role") {
     titleHeader = "Role & Permission";
+
     imageHeader = "../images/privacy.png";
   }
 
@@ -42,13 +48,14 @@ function App() {
         <Header title={titleHeader} image={imageHeader} />
         <Routes>
           <Route path="/" element={<Navigate to="/users" />} />
+
           <Route
             path="/users"
             element={<TableListUser onSetData={onSetData} />}
           >
             <Route path="/users/new" element={<NewUser data={data} />} />
 
-            <Route path="/users/:id/edit" element={<EditUser />} />
+            <Route path="/users/:id" element={<EditUser />} />
           </Route>
 
           <Route path="/roles" element={<RolePermission />}>
