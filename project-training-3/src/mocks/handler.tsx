@@ -68,21 +68,16 @@ export const handlers = [
   rest.get("/users/:id", async (req, res, ctx) => {
     const { id } = req.params;
 
-    const idItem = Number(id);
-    const user = users.find((userItem) => userItem.id === idItem);
+    const userItem = users.find((userItem) => userItem.id === +id);
 
-    if (!user) {
+    if (!userItem) {
       return res(
         ctx.status(404),
         ctx.json({ message: `For the id ${id}, no event could be found.` })
       );
     }
 
-    console.log("userItemHandler:", user);
-
-    setTimeout(() => {
-      res(ctx.json({ user }));
-    }, 1000);
+    return res(ctx.json({ userItem }));
   }),
 
   rest.delete("/users/:id", async (req, res, ctx) => {
@@ -101,9 +96,57 @@ export const handlers = [
       users.splice(userIndex, 1);
     }
 
-    setTimeout(() => {
-      res(ctx.json({ users: users, message: "User deleted" }));
-    }, 1000);
+    return res(ctx.json({ users: users, message: "User deleted" }));
+  }),
+
+  rest.put("/users/:id", async (req, res, ctx) => {
+    const { id } = req.params;
+    const user = await req.json();
+
+    console.log("user:", user);
+
+    if (!user) {
+      return res(ctx.status(400), ctx.json({ message: "Event is required" }));
+    }
+
+    if (
+      !user.name?.trim() ||
+      !user.team?.trim() ||
+      !user.role?.trim() ||
+      !user.image?.trim() ||
+      !user.tel?.trim() ||
+      !user.status?.trim()
+    ) {
+      return res(
+        ctx.status(400),
+        ctx.json({ message: "Invalid data provided." })
+      );
+    }
+
+    const userIndex = users.findIndex((user) => user.id === +id);
+
+    if (userIndex === -1) {
+      return res(ctx.status(404), ctx.json({ message: "Event not found" }));
+    }
+    const day = new Date();
+
+    const newUser = {
+      ...user,
+      id: id,
+      date: [
+        day.getDate(),
+        day.toLocaleString("en-US", { month: "short" }),
+        day.toLocaleString("en-US", { year: "2-digit" }),
+      ].join(" "),
+      time: [
+        ("0" + day.getHours()).substr(-2),
+        ("0" + day.getMinutes()).substr(-2),
+      ].join(":"),
+    };
+
+    users[userIndex] = newUser;
+
+    return res(ctx.status(200), ctx.json({ user: users[userIndex] }));
   }),
 
   // Role Page

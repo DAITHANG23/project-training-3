@@ -9,6 +9,7 @@ import {
   getUserItem,
   removeUserItem,
   getRoleUpdateItem,
+  editUserItem,
 } from "@/api";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
@@ -27,6 +28,15 @@ export interface Users {
   status: string;
   date: string;
   time: string;
+}
+
+export interface UsersItem {
+  tel: string;
+  image: string;
+  name: string;
+  role: string;
+  team: string;
+  status: string;
 }
 
 export interface Roles {
@@ -138,16 +148,17 @@ export const useCreateUser = () => {
   });
 };
 
-export const useUser = (id: string | undefined) => {
-  const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
+export const useUser = (id?: string) => {
+  const { data, isLoading, error, isFetching, refetch } = useQuery<Users>(
     [QUERY_KEY.useGetUsers, id],
     ({ signal }) => getUserItem({ signal, id }),
 
     {
       enabled: id !== undefined,
+      keepPreviousData: true,
     }
   );
-  console.log("dataFetch:", data);
+
   return { data, isLoading, error, isFetching, refetch };
 };
 
@@ -173,6 +184,51 @@ export const useRemoveUser = () => {
   return { mutate, isError, isLoading, error };
 };
 
+// export const useUpdateUser = (idUser?: string) => {
+//   const queryClient = useQueryClient();
+//   const { mutate } = useMutation({
+//     mutationFn: editUserItem,
+//     onMutate: async (data) => {
+//       const newUser = data;
+
+//       console.log(newUser);
+
+//       await queryClient.cancelQueries({
+//         queryKey: [QUERY_KEY.useGetUsers, idUser],
+//       });
+//       const previousEvent = queryClient.getQueryData([
+//         QUERY_KEY.useGetUsers,
+//         idUser,
+//       ]);
+
+//       queryClient.setQueryData([QUERY_KEY.useGetUsers, idUser], newUser);
+
+//       return { previousEvent };
+//     },
+//     onError: (error, data, context) => {
+//       queryClient.setQueryData(
+//         [QUERY_KEY.useGetUsers, idUser],
+//         context?.previousEvent
+//       );
+//     },
+//     onSettled: () => {
+//       queryClient.invalidateQueries([QUERY_KEY.useGetUsers, idUser]);
+//     },
+//   });
+//   return { mutate };
+// };
+
+export const useUpdateUser = (idUser?: string) => {
+  const queryClient = useQueryClient();
+  const { mutate } = useMutation({
+    mutationFn: editUserItem,
+    onSuccess: (data) => {
+      queryClient.setQueryData([QUERY_KEY.useGetUsers, idUser], data);
+    },
+  });
+  return { mutate };
+};
+
 export const useRoles = () => {
   const { data, isLoading, error, refetch } = useQuery<Roles[]>(
     QUERY_KEY.useGetRoles,
@@ -188,7 +244,7 @@ export const useRoles = () => {
   return { data, isLoading, error, refetch };
 };
 
-export const useRole = (id: string | undefined) => {
+export const useRole = (id?: string) => {
   const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
     [
       (QUERY_KEY.useGetRoles,

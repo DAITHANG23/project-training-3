@@ -16,8 +16,9 @@ import {
   StyledBtnCancel,
   StyledBtnCreate,
 } from "@/components/EditUser/EditUser.styles";
-import { useUser } from "@/hooks/useFetch";
+import { useUser, Users, useUpdateUser } from "@/hooks/useFetch";
 import { FormControl, FormControlLabel, Radio } from "@mui/material";
+import { useEffect, useState } from "react";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -26,9 +27,17 @@ const EditUser = () => {
 
   const idUser: string | undefined = params.id;
 
+  const [user, setUser] = useState<Users | undefined>();
+
   const { data, isLoading, error } = useUser(idUser);
 
-  console.log("data", data);
+  const { mutate: updateUserItem } = useUpdateUser(idUser);
+
+  useEffect(() => {
+    if (data) {
+      setUser(data);
+    }
+  }, [data]);
 
   const handleClose = () => {
     navigate("../");
@@ -47,10 +56,14 @@ const EditUser = () => {
 
   const { errors } = formState;
 
+  const onHandlerChange =
+    (name: keyof Users) => (e: React.ChangeEvent<HTMLInputElement>) => {};
+
   const onFormSubmitCreateUserHandle = handleSubmit((userItem) => {
     navigate("../");
-
-    reset();
+    console.log("user", userItem);
+    updateUserItem({ id: idUser, user: userItem });
+    //reset();
   });
 
   return (
@@ -66,11 +79,13 @@ const EditUser = () => {
             type="text"
             id="name"
             placeholder="Jane Cooper"
+            // onChange={onHandlerChange("name")}
             {...register("name", {
               required: {
                 value: true,
                 message: "Please enter a name.",
               },
+              //onChange: onHandlerChange("name"),
             })}
           />
           <StyledContentError>{errors.name?.message}</StyledContentError>
@@ -86,6 +101,7 @@ const EditUser = () => {
                   value: true,
                   message: "Please enter a role.",
                 },
+                //onChange: onHandlerChange("role"),
               })}
             />
 
@@ -102,6 +118,7 @@ const EditUser = () => {
                   value: true,
                   message: "Please enter a avatar.",
                 },
+                //onChange: onHandlerChange("image"),
               })}
             />
 
@@ -112,12 +129,14 @@ const EditUser = () => {
             <StyledInputName
               type="text"
               id="team"
+              //defaultValue={user?.team ?? ""}
               placeholder="Tech"
               {...register("team", {
                 required: {
                   value: true,
                   message: "Please enter a team.",
                 },
+                //onChange: onHandlerChange("team"),
               })}
             />
 
@@ -131,12 +150,15 @@ const EditUser = () => {
               rules={{
                 required: true,
               }}
+              //defaultValue={user?.tel}
               render={({ field, fieldState }) => (
                 <StyleInputNumberPhone
                   {...field}
+                  // value={user?.tel}
                   defaultCountry={"SG"}
                   helperText={fieldState.invalid ? "Tel is invalid" : ""}
                   error={fieldState.invalid}
+                  //onChange={() => onHandlerChange("tel")}
                 />
               )}
             />
@@ -154,11 +176,13 @@ const EditUser = () => {
                 }}
                 control={control}
                 name="status"
+                //defaultValue={user?.status}
                 render={({ field }) => (
                   <StyledRadioStatus
                     {...field}
                     row={true}
                     aria-labelledby="demo-row-radio-buttons-group-label"
+                    //onChange={() => onHandlerChange("status")}
                   >
                     <FormControlLabel
                       value="Active"

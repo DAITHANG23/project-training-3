@@ -5,12 +5,18 @@ import {
   UseUserSearch,
   UseUser,
   UserItem,
+  UsersItem,
 } from "@/hooks/useFetch";
 
 export interface GetCreateRoleUpdate {
   id: string | undefined;
   dataForm: any;
   role?: string;
+}
+
+interface EditUser {
+  id?: string;
+  user: UsersItem;
 }
 
 axios.defaults.baseURL = "http://localhost:3000";
@@ -38,11 +44,9 @@ export const getUsers = async ({
 };
 
 export const getUserItem = async ({ signal, id }: UserItem) => {
-  console.log("idInAPI:", id);
   const res = await axios.get(`/users/${id}`, { signal: signal });
 
-  console.log("getUserItem:", res);
-  return res.data.user;
+  return res.data.userItem;
 };
 
 export const getUsersSearch = async ({ signal, searchTerm }: UseUserSearch) => {
@@ -67,9 +71,9 @@ export const removeUserItem = async (id: string) => {
   return res;
 };
 
-export const editUserItem = async (id: string, user: Users) => {
+export const editUserItem = async ({ id, user }: EditUser) => {
   const res = await axios.put(`/users/${id}`, user);
-
+  console.log("user:", res.data.user);
   return res.data.user;
 };
 
@@ -96,7 +100,7 @@ export const getRoleUpdateItem = async ({
   signal,
   role,
 }: {
-  id: string | undefined;
+  id?: string;
   signal?: AbortSignal;
   role?: string;
 }) => {
