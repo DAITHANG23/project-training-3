@@ -18,7 +18,6 @@ import {
 } from "@/components/EditUser/EditUser.styles";
 import { useUser } from "@/hooks/useFetch";
 import { FormControl, FormControlLabel, Radio } from "@mui/material";
-import UserForm from "../UserForm/UserForm";
 
 const EditUser = () => {
   const navigate = useNavigate();
@@ -31,7 +30,9 @@ const EditUser = () => {
 
   console.log("data", data);
 
-  const handleClose = () => {};
+  const handleClose = () => {
+    navigate("../");
+  };
 
   const { register, handleSubmit, formState, reset, control } = useForm({
     defaultValues: {
@@ -47,28 +48,8 @@ const EditUser = () => {
   const { errors } = formState;
 
   const onFormSubmitCreateUserHandle = handleSubmit((userItem) => {
-    //const day = new Date();
-
-    //const id = users.length + 1;
-
-    // const newUser = {
-    //   ...userItem,
-    //   id: id,
-
-    //   date: [
-    //     day.getDate(),
-    //     day.toLocaleString("en-US", { month: "short" }),
-    //     day.toLocaleString("en-US", { year: "2-digit" }),
-    //   ].join(" "),
-
-    //   time: [
-    //     ("0" + day.getHours()).substr(-2),
-    //     ("0" + day.getMinutes()).substr(-2),
-    //   ].join(":"),
-    // };
-
-    //createUser(newUser);
     navigate("../");
+
     reset();
   });
 

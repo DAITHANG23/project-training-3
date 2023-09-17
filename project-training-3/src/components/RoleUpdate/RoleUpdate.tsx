@@ -37,19 +37,24 @@ import {
   StyledTableCellCollapse,
   StyledTableTitle,
 } from "@/components/RoleUpdate/RoleUpdate.styles";
-import { useRoleUpdate, useRoleUpdateItem } from "@/hooks/useFetch";
+import { useRoleUpdate, useRoleUpdateItem, useRole } from "@/hooks/useFetch";
 import { useNavigate, useParams } from "react-router-dom";
 
 const RoleUpdate = () => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
+
   const [open, setOpen] = useState(false);
-  //const { data, error, isLoading, refetch } = useRoleUpdate();
+
   const params = useParams();
   const idRole = params.id;
+  const roleItem = params.role;
 
-  const { data, isLoading, error } = useRoleUpdateItem(idRole);
+  const { data, isLoading, error } = useRoleUpdateItem(idRole, roleItem);
+
   const { mutate: createRoleUpdate } = useRoleUpdate(idRole);
+
   const [rolesUpdateList, setRolesUpdateList] = useState({});
+
   const navigate = useNavigate();
 
   const elements = [
@@ -64,6 +69,7 @@ const RoleUpdate = () => {
 
   const onClick = (id: string) => {
     setCardIDOpen(id);
+
     setOpen(!open);
   };
 
@@ -76,13 +82,16 @@ const RoleUpdate = () => {
   }, [data]);
 
   if (isLoading) return <>{"Loading..."}</>;
+
   if (error instanceof Error)
     return <>{"An error has occurred: " + error.message}</>;
 
   const onFormSubmitEditHandle = handleSubmit((data) => {
-    createRoleUpdate({ id: idRole, dataForm: data });
+    createRoleUpdate({ id: idRole, dataForm: data, role: roleItem });
+
     navigate("/roles");
   });
+
   console.log("data", data);
 
   const TableBodyContent = elements.map((el) => {
@@ -90,6 +99,7 @@ const RoleUpdate = () => {
 
     const TableEdit = elementsFeature.map((elFeature) => {
       const nameEl = `${elFeature}${el}`;
+
       return (
         <StyledTableRowTitle key={nameEl}>
           <StyledTableTitle>
@@ -192,7 +202,7 @@ const RoleUpdate = () => {
             <StyledSpan>/</StyledSpan>
             <StyledTitle>Roles & Permission</StyledTitle>
             <StyledSpan>/</StyledSpan>
-            <StyledTitleActive> role</StyledTitleActive>
+            <StyledTitleActive>{roleItem} role</StyledTitleActive>
           </StyledBoxTitle>
 
           {/* <Link to="/roles">
@@ -207,7 +217,7 @@ const RoleUpdate = () => {
               <StyledTableRow>
                 <StyledTableCellTitle>
                   {/* {roleUpdated.toUpperCase()}  */}
-                  ROLE
+                  {roleItem?.toLocaleUpperCase()} ROLE
                 </StyledTableCellTitle>
                 <StyledTableCellRadio>Yes</StyledTableCellRadio>
                 <StyledTableCellRadio>No</StyledTableCellRadio>

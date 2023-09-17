@@ -64,7 +64,7 @@ function App() {
               element={<NewRole onSetOpen={onSetOpen} />}
             />
           </Route>
-          <Route path="/roles/:id" element={<RoleUpdate />} />
+          <Route path="/roles/:role/:id" element={<RoleUpdate />} />
         </Routes>
       </StyledBodyContainer>
     </StyledBoxContainer>

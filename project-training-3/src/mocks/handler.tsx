@@ -68,7 +68,8 @@ export const handlers = [
   rest.get("/users/:id", async (req, res, ctx) => {
     const { id } = req.params;
 
-    const user = users.find((userItem) => userItem.id === +id);
+    const idItem = Number(id);
+    const user = users.find((userItem) => userItem.id === idItem);
 
     if (!user) {
       return res(
@@ -105,6 +106,8 @@ export const handlers = [
     }, 1000);
   }),
 
+  // Role Page
+
   rest.post("/roles/new", async (req, res, ctx) => {
     const role = await req.json();
 
@@ -123,7 +126,7 @@ export const handlers = [
     );
   }),
 
-  rest.post("/roles/:id", async (req, res, ctx) => {
+  rest.post("/roles/:role/:id", async (req, res, ctx) => {
     const roleUpdate = await req.json();
 
     const { id } = req.params;
@@ -148,7 +151,7 @@ export const handlers = [
     );
   }),
 
-  rest.get("/roles/:id", (req, res, ctx) => {
+  rest.get("/roles/:role/:id", (req, res, ctx) => {
     const { id } = req.params;
 
     const roleItemUpdate = roleUpdates.find((roleItem) => roleItem.id === id);

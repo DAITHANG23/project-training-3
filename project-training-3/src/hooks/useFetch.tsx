@@ -8,6 +8,7 @@ import {
   getUsersSearch,
   getUserItem,
   removeUserItem,
+  getRoleUpdateItem,
 } from "@/api";
 import { useQuery, useMutation, useQueryClient } from "react-query";
 
@@ -127,7 +128,10 @@ export const useCreateUser = () => {
       // queryClient.setQueryData(QUERY_KEY.useGetUsers, (oldQueryData: any) => {
       //   return [...oldQueryData, data];
       // });
-      queryClient.invalidateQueries({ queryKey: ["fetchData"] });
+      queryClient.invalidateQueries({
+        queryKey: [QUERY_KEY.useGetUsers],
+        exact: true,
+      });
 
       navigate("../");
     },
@@ -136,18 +140,11 @@ export const useCreateUser = () => {
 
 export const useUser = (id: string | undefined) => {
   const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
-    [
-      (QUERY_KEY.useGetUsers,
-      {
-        id: id,
-      }),
-    ],
+    [QUERY_KEY.useGetUsers, id],
     ({ signal }) => getUserItem({ signal, id }),
 
     {
       enabled: id !== undefined,
-      keepPreviousData: true,
-      staleTime: 10 * 1000,
     }
   );
   console.log("dataFetch:", data);
@@ -164,7 +161,7 @@ export const useRemoveUser = () => {
 
     onSuccess: (_, id) => {
       queryClient.invalidateQueries({
-        queryKey: ["fetchData"],
+        queryKey: [QUERY_KEY.useGetUsers],
         exact: true,
         refetchActive: true,
       });
@@ -191,6 +188,25 @@ export const useRoles = () => {
   return { data, isLoading, error, refetch };
 };
 
+export const useRole = (id: string | undefined) => {
+  const { data, isLoading, error, isFetching, refetch } = useQuery<Users[]>(
+    [
+      (QUERY_KEY.useGetRoles,
+      {
+        id: id,
+      }),
+    ],
+    ({ signal }) => getRoleItem({ signal, id }),
+
+    {
+      enabled: id !== undefined,
+      keepPreviousData: true,
+    }
+  );
+
+  return { data, isLoading, error, isFetching, refetch };
+};
+
 export const useCreateRole = () => {
   const queryClient = useQueryClient();
 
@@ -205,27 +221,29 @@ export const useCreateRole = () => {
   });
 };
 
-export const useRoleUpdateItem = (id: string | undefined) => {
+export const useRoleUpdateItem = (id?: string, role?: string) => {
   const { data, isLoading, error, isFetching, refetch } = useQuery<string[]>(
     [
       (QUERY_KEY.useGetRoleUpdate,
       {
         id: id,
+        role: role,
       }),
     ],
 
-    ({ signal }) => getRoleItem({ signal, id }),
+    ({ signal }) => getRoleUpdateItem({ signal, id, role }),
 
     {
       keepPreviousData: true,
       staleTime: 10 * 1000,
+      enabled: role !== null,
     }
   );
 
   return { data, isLoading, error, isFetching, refetch };
 };
 
-export const useRoleUpdate = (id: string | undefined) => {
+export const useRoleUpdate = (id?: string) => {
   const queryClient = useQueryClient();
 
   return useMutation({

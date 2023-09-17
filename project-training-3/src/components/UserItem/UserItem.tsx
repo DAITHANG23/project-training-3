@@ -75,7 +75,7 @@ export const UserItem = ({
 
     mutate(idUser);
 
-    navigate("/users");
+    navigate("../");
   };
 
   const handleStopDelete = () => {
@@ -83,7 +83,7 @@ export const UserItem = ({
   };
 
   // edit user
-  const onEditUserItem = (idItem: number) => {
+  const onEditUserItem = () => {
     setIsEditing(true);
     navigate(`/users/${id}`);
   };
@@ -213,7 +213,7 @@ export const UserItem = ({
             }}
           >
             <Box>
-              <Button onClick={() => onEditUserItem(id)}>
+              <Button onClick={onEditUserItem}>
                 <StyledEditIcon />
                 Edit
               </Button>

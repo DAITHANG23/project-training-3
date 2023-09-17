@@ -6,6 +6,7 @@ import {
   StyleEditIcon,
 } from "@/components/RoleItem/RoleItem.styles";
 import { useNavigate } from "react-router-dom";
+// import { useRoleUpdateItem } from "@/hooks/useFetch";
 
 interface Roles {
   role: string;
@@ -15,10 +16,13 @@ interface Roles {
 
 const RoleItem = ({ id, role, describe }: Roles) => {
   const navigate = useNavigate();
-  const onEditRoleHandler = (id: string) => {
-    // const existingRole = roles.find((roleItem) => roleItem.id === id);
-    // setRoleUpdate(existingRole?.role);
-    navigate(`/roles/${id}`);
+
+  // const { data, isLoading, error } = useRoleUpdateItem(id);
+
+  // console.log("dataRole:", data);
+
+  const onEditRoleHandler = () => {
+    navigate(`/roles/${role}/${id}`);
   };
 
   return (
@@ -27,7 +31,7 @@ const RoleItem = ({ id, role, describe }: Roles) => {
       <StyledTableCellDes align="left">{describe}</StyledTableCellDes>
 
       <TableCell align="right">
-        <StyleEditIcon onClick={() => onEditRoleHandler(id)} />
+        <StyleEditIcon onClick={onEditRoleHandler} />
       </TableCell>
     </StyledTableRowEdit>
   );

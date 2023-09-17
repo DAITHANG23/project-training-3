@@ -107,6 +107,7 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
 
       return (
         <UserItem
+          key={id}
           id={id}
           name={name}
           image={image}
