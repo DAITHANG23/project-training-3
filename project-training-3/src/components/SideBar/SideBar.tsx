@@ -17,21 +17,28 @@ interface SideBarProps {
 }
 const SideBar = ({ onChoosePage }: SideBarProps) => {
   const [isChooseUserPage, setIsChooseUserPage] = useState<boolean>(true);
+
   const [isChooseRolePage, setIsChooseRolePage] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
   const onChooseUserPage = () => {
     setIsChooseUserPage(true);
+
     setIsChooseRolePage(false);
+
     onChoosePage("user");
+
     navigate("/users");
   };
 
   const onChooseRolePage = () => {
     setIsChooseRolePage(true);
+
     setIsChooseUserPage(false);
+
     onChoosePage("role");
+
     navigate("/roles");
   };
 

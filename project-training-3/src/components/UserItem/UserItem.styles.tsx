@@ -83,3 +83,33 @@ export const StyledModalEdit = styled(Modal)(() => ({
   top: "7vh",
   left: "calc(50% - 15rem)",
 }));
+
+export const StyledBoxButton = styled(Box)(() => ({
+  display: "flex",
+  justifyContent: "flex-end",
+  alignItems: "center",
+  gap: "2rem",
+}));
+export const StyledButtonCancel = styled(Box)(({ theme }) => ({
+  font: "inherit",
+  cursor: "pointer",
+  border: "none",
+  backgroundColor: "transparent",
+  color: "#3f0c26",
+  borderRadius: "4px",
+  fontWeight: "bold",
+  textDecoration: "none",
+}));
+
+export const StyledButtonDelete = styled(Box)(({ theme }) => ({
+  font: "inherit",
+  cursor: "pointer",
+  padding: "0.5rem 1.5rem",
+  border: "none",
+  backgroundColor: theme.palette.primary.main,
+  color: theme.palette.background.paper,
+  borderRadius: "4px",
+  boxShadow: "0 2px 4px rgba(0, 0, 0, 0.26)",
+  fontWeight: "bold",
+  textDecoration: "none",
+}));

@@ -31,6 +31,7 @@ const RolePermission = () => {
     setOpen(true);
     navigate("/roles/new");
   };
+
   const handleClose = () => {
     setOpen(false);
     navigate("/roles");
@@ -39,8 +40,10 @@ const RolePermission = () => {
   const onSetOpen = (data: boolean) => {
     setOpen(data);
   };
+
   const listRolePermission = roles?.map((roleItem) => {
     const { id, role, describe } = roleItem;
+
     return <RoleItem id={id} role={role} describe={describe} />;
   });
 
@@ -51,6 +54,7 @@ const RolePermission = () => {
   }, [data]);
 
   if (isLoading) return <>{"Loading..."}</>;
+
   if (error instanceof Error)
     return <>{"An error has occurred: " + error.message}</>;
 

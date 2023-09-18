@@ -30,6 +30,11 @@ const TableHeader = ({ onClickButtonStatus, onSearch }: TableHeaderProps) => {
     }
   }, [search, onSearch, data]);
 
+  if (isLoading) return <>{"Loading..."} </>;
+
+  if (error instanceof Error)
+    return <>{"An error has occurred: " + error.message}</>;
+
   const onClickChooseStatus = (status: Status) => {
     setStatus(status);
     onClickButtonStatus(status);

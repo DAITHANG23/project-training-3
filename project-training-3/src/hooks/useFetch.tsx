@@ -101,7 +101,6 @@ export const useUsers = (
 
     {
       keepPreviousData: true,
-      //staleTime: 10 * 1000,
     }
   );
 
@@ -135,9 +134,6 @@ export const useCreateUser = () => {
 
   return useMutation(createUsers, {
     onSuccess: (data) => {
-      // queryClient.setQueryData(QUERY_KEY.useGetUsers, (oldQueryData: any) => {
-      //   return [...oldQueryData, data];
-      // });
       queryClient.invalidateQueries({
         queryKey: [QUERY_KEY.useGetUsers],
         exact: true,
@@ -183,40 +179,6 @@ export const useRemoveUser = () => {
 
   return { mutate, isError, isLoading, error };
 };
-
-// export const useUpdateUser = (idUser?: string) => {
-//   const queryClient = useQueryClient();
-//   const { mutate } = useMutation({
-//     mutationFn: editUserItem,
-//     onMutate: async (data) => {
-//       const newUser = data;
-
-//       console.log(newUser);
-
-//       await queryClient.cancelQueries({
-//         queryKey: [QUERY_KEY.useGetUsers, idUser],
-//       });
-//       const previousEvent = queryClient.getQueryData([
-//         QUERY_KEY.useGetUsers,
-//         idUser,
-//       ]);
-
-//       queryClient.setQueryData([QUERY_KEY.useGetUsers, idUser], newUser);
-
-//       return { previousEvent };
-//     },
-//     onError: (error, data, context) => {
-//       queryClient.setQueryData(
-//         [QUERY_KEY.useGetUsers, idUser],
-//         context?.previousEvent
-//       );
-//     },
-//     onSettled: () => {
-//       queryClient.invalidateQueries([QUERY_KEY.useGetUsers, idUser]);
-//     },
-//   });
-//   return { mutate };
-// };
 
 export const useUpdateUser = (idUser?: string) => {
   const queryClient = useQueryClient();

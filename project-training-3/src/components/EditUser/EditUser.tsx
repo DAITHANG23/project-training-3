@@ -39,11 +39,7 @@ const EditUser = () => {
     }
   }, [data]);
 
-  const handleClose = () => {
-    navigate("../");
-  };
-
-  const { register, handleSubmit, formState, reset, control } = useForm({
+  const { register, handleSubmit, formState, control } = useForm({
     defaultValues: {
       name: "",
       role: "",
@@ -54,16 +50,21 @@ const EditUser = () => {
     },
   });
 
-  const { errors } = formState;
+  if (isLoading) return <>{"Loading..."} </>;
 
-  const onHandlerChange =
-    (name: keyof Users) => (e: React.ChangeEvent<HTMLInputElement>) => {};
+  if (error instanceof Error)
+    return <>{"An error has occurred: " + error.message}</>;
+
+  const handleClose = () => {
+    navigate("../");
+  };
+
+  const { errors } = formState;
 
   const onFormSubmitCreateUserHandle = handleSubmit((userItem) => {
     navigate("../");
     console.log("user", userItem);
     updateUserItem({ id: idUser, user: userItem });
-    //reset();
   });
 
   return (
@@ -79,13 +80,11 @@ const EditUser = () => {
             type="text"
             id="name"
             placeholder="Jane Cooper"
-            // onChange={onHandlerChange("name")}
             {...register("name", {
               required: {
                 value: true,
                 message: "Please enter a name.",
               },
-              //onChange: onHandlerChange("name"),
             })}
           />
           <StyledContentError>{errors.name?.message}</StyledContentError>
@@ -95,13 +94,11 @@ const EditUser = () => {
               type="text"
               id="role"
               placeholder="Staff"
-              // defaultValue={}
               {...register("role", {
                 required: {
                   value: true,
                   message: "Please enter a role.",
                 },
-                //onChange: onHandlerChange("role"),
               })}
             />
 
@@ -118,7 +115,6 @@ const EditUser = () => {
                   value: true,
                   message: "Please enter a avatar.",
                 },
-                //onChange: onHandlerChange("image"),
               })}
             />
 
@@ -129,14 +125,12 @@ const EditUser = () => {
             <StyledInputName
               type="text"
               id="team"
-              //defaultValue={user?.team ?? ""}
               placeholder="Tech"
               {...register("team", {
                 required: {
                   value: true,
                   message: "Please enter a team.",
                 },
-                //onChange: onHandlerChange("team"),
               })}
             />
 
@@ -150,15 +144,12 @@ const EditUser = () => {
               rules={{
                 required: true,
               }}
-              //defaultValue={user?.tel}
               render={({ field, fieldState }) => (
                 <StyleInputNumberPhone
                   {...field}
-                  // value={user?.tel}
                   defaultCountry={"SG"}
                   helperText={fieldState.invalid ? "Tel is invalid" : ""}
                   error={fieldState.invalid}
-                  //onChange={() => onHandlerChange("tel")}
                 />
               )}
             />
@@ -176,13 +167,11 @@ const EditUser = () => {
                 }}
                 control={control}
                 name="status"
-                //defaultValue={user?.status}
                 render={({ field }) => (
                   <StyledRadioStatus
                     {...field}
                     row={true}
                     aria-labelledby="demo-row-radio-buttons-group-label"
-                    //onChange={() => onHandlerChange("status")}
                   >
                     <FormControlLabel
                       value="Active"

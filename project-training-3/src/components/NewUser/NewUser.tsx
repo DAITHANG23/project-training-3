@@ -34,10 +34,11 @@ export interface UserItem {
 
 const NewUser = ({ data }: NewUsersProp) => {
   const { mutate: createUser } = useCreateUser();
-  // const [open, setOpen] = useState(false);
-  // const { data, error, isLoading } = useUsers();
+
   const [users, setUsers] = useState<Users[]>([]);
+
   const navigate = useNavigate();
+
   const { register, handleSubmit, formState, reset, control } = useForm({
     defaultValues: {
       name: "",
@@ -49,6 +50,7 @@ const NewUser = ({ data }: NewUsersProp) => {
     },
   });
   const { errors } = formState;
+
   useEffect(() => {
     if (data) {
       setUsers(data);
@@ -61,23 +63,32 @@ const NewUser = ({ data }: NewUsersProp) => {
 
   const onFormSubmitCreateUserHandle = handleSubmit((userItem) => {
     const day = new Date();
+
     const id = users.length + 1;
+
     const newUser = {
       ...userItem,
+
       id: id,
+
       date: [
         day.getDate(),
+
         day.toLocaleString("en-US", { month: "short" }),
+
         day.toLocaleString("en-US", { year: "2-digit" }),
       ].join(" "),
+
       time: [
         ("0" + day.getHours()).substr(-2),
+
         ("0" + day.getMinutes()).substr(-2),
       ].join(":"),
     };
+
     createUser(newUser);
+
     reset();
-    //navigate("../");
   });
   return (
     <StyledModalHeaderContainer>

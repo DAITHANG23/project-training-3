@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from "react";
 import { FormControl, FormControlLabel, Radio } from "@mui/material";
 import { useForm, Controller } from "react-hook-form";
 import {
   StyledModalHeaderContainer,
   StyledBoxHeader,
-  StyledTitleModal,
-  StyledButtonClose,
   StyledForm,
   StyledContentError,
   StyledBoxDes,
@@ -17,25 +14,17 @@ import {
   StyledBtnCreate,
 } from "@/components/UserForm/UserForm.styles";
 import { useNavigate } from "react-router-dom";
-import { Users, useCreateUser } from "@/hooks/useFetch";
+import { Users } from "@/hooks/useFetch";
 import { UserItem } from "@/components/NewUser/NewUser";
+
 interface ChildrenProps {
   inputData?: Users[];
   children?: string | JSX.Element | JSX.Element[];
   onSubmit: (value: UserItem) => void;
 }
-const UserForm = ({ inputData, children, onSubmit }: ChildrenProps) => {
-  //const { mutate: createUser } = useCreateUser();
 
-  //const [users, setUsers] = useState<Users[]>([]);
-
+const UserForm = ({ children, onSubmit }: ChildrenProps) => {
   const navigate = useNavigate();
-
-  // useEffect(() => {
-  //   if (inputData) {
-  //     setUsers(inputData);
-  //   }
-  // }, [inputData]);
 
   const handleClose = () => {
     navigate("../");
@@ -55,28 +44,6 @@ const UserForm = ({ inputData, children, onSubmit }: ChildrenProps) => {
   const { errors } = formState;
 
   const onFormSubmitCreateUserHandle = handleSubmit((userItem) => {
-    //const day = new Date();
-
-    //const id = users.length + 1;
-
-    // const newUser = {
-    //   ...userItem,
-    //   id: id,
-
-    //   date: [
-    //     day.getDate(),
-    //     day.toLocaleString("en-US", { month: "short" }),
-    //     day.toLocaleString("en-US", { year: "2-digit" }),
-    //   ].join(" "),
-
-    //   time: [
-    //     ("0" + day.getHours()).substr(-2),
-    //     ("0" + day.getMinutes()).substr(-2),
-    //   ].join(":"),
-    // };
-
-    //createUser(newUser);
-
     onSubmit(userItem);
 
     reset();
@@ -106,7 +73,6 @@ const UserForm = ({ inputData, children, onSubmit }: ChildrenProps) => {
               type="text"
               id="role"
               placeholder="Staff"
-              // defaultValue={}
               {...register("role", {
                 required: {
                   value: true,

@@ -37,7 +37,7 @@ import {
   StyledTableCellCollapse,
   StyledTableTitle,
 } from "@/components/RoleUpdate/RoleUpdate.styles";
-import { useRoleUpdate, useRoleUpdateItem, useRole } from "@/hooks/useFetch";
+import { useRoleUpdate, useRoleUpdateItem } from "@/hooks/useFetch";
 import { useNavigate, useParams } from "react-router-dom";
 
 const RoleUpdate = () => {
@@ -124,7 +124,6 @@ const RoleUpdate = () => {
                   >
                     <FormControlLabel
                       value="Yes"
-                      //checked={rolesUpdateList.name}
                       control={
                         <Radio
                           checkedIcon={<BpCheckedIcon />}
@@ -136,7 +135,6 @@ const RoleUpdate = () => {
 
                     <FormControlLabel
                       value="No"
-                      //checked={rolesUpdateList.name}
                       control={
                         <Radio
                           checkedIcon={<BpCheckedIcon />}

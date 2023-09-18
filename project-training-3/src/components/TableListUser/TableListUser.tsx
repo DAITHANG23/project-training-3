@@ -49,10 +49,12 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
   }, [dataSearch]);
 
   // Paging Table
+
   const [page, rowsPerPage, handleChangePage, handleChangeRowsPerPage] =
     usePaging();
 
   //Sorting Table
+
   const [
     createSortHandle,
     sortedTableRow,
@@ -60,12 +62,10 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
     oneOderDirection,
     valueToOrderBy,
   ] = useSortingTable();
+
   const sort = oneOderDirection;
-  const { data, error, isLoading, isFetching } = useUsers(
-    page,
-    rowsPerPage,
-    sort
-  );
+
+  const { data, error, isLoading } = useUsers(page, rowsPerPage, sort);
 
   useEffect(() => {
     if (data) {
@@ -74,14 +74,6 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
       onSetData(data);
     }
   }, [data, onSetData]);
-
-  // if (isFetching) {
-  //   console.log("isFetching", isFetching);
-  // }
-
-  // if (isLoading) {
-  //   console.log("isLoading", isLoading);
-  // }
 
   if (isLoading) return <>{"Loading..."} </>;
 

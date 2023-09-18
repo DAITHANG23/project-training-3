@@ -17,10 +17,6 @@ interface Roles {
 const RoleItem = ({ id, role, describe }: Roles) => {
   const navigate = useNavigate();
 
-  // const { data, isLoading, error } = useRoleUpdateItem(id);
-
-  // console.log("dataRole:", data);
-
   const onEditRoleHandler = () => {
     navigate(`/roles/${role}/${id}`);
   };
