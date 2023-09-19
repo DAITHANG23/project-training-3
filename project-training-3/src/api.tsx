@@ -73,7 +73,7 @@ export const removeUserItem = async (id: string) => {
 
 export const editUserItem = async ({ id, user }: EditUser) => {
   const res = await axios.put(`/users/${id}`, user);
-  console.log("user:", res.data.user);
+
   return res.data.user;
 };
 
@@ -85,13 +85,13 @@ export const getRoles = async () => {
 
 export const getRoleItem = async ({ signal, id }: UserItem) => {
   const res = await axios.get(`/roles/${id}`, { signal: signal });
-  console.log("data", res.data.role);
 
   return res.data.role;
 };
 
 export const createRoles = async (role: Roles) => {
   const res = await axios.post("/roles/new", role);
+
   return res.data.role;
 };
 

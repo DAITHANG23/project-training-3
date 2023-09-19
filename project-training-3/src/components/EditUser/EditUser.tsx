@@ -63,7 +63,7 @@ const EditUser = () => {
 
   const onFormSubmitCreateUserHandle = handleSubmit((userItem) => {
     navigate("../");
-    console.log("user", userItem);
+
     updateUserItem({ id: idUser, user: userItem });
   });
 

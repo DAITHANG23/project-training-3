@@ -103,8 +103,6 @@ export const handlers = [
     const { id } = req.params;
     const user = await req.json();
 
-    console.log("user:", user);
-
     if (!user) {
       return res(ctx.status(400), ctx.json({ message: "Event is required" }));
     }
