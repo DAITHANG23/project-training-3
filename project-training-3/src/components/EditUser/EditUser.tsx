@@ -27,7 +27,7 @@ const EditUser = () => {
 
   const idUser: string | undefined = params.id;
 
-  const [user, setUser] = useState<Users | undefined>();
+  const [user, setUser] = useState<Users>();
 
   const { data, isLoading, error } = useUser(idUser);
 
@@ -41,12 +41,12 @@ const EditUser = () => {
 
   const { register, handleSubmit, formState, control } = useForm({
     defaultValues: {
-      name: "",
-      role: "",
-      team: "",
-      status: "Active",
-      tel: "",
-      image: "",
+      name: user?.name,
+      role: user?.role,
+      team: user?.team,
+      status: user?.status,
+      tel: user?.tel,
+      image: user?.image,
     },
   });
 
@@ -80,6 +80,7 @@ const EditUser = () => {
             type="text"
             id="name"
             placeholder="Jane Cooper"
+            defaultValue={user?.name ?? ""}
             {...register("name", {
               required: {
                 value: true,
@@ -94,6 +95,7 @@ const EditUser = () => {
               type="text"
               id="role"
               placeholder="Staff"
+              defaultValue={user?.role ?? ""}
               {...register("role", {
                 required: {
                   value: true,
@@ -110,6 +112,7 @@ const EditUser = () => {
               type="text"
               id="avatar"
               placeholder="avatar.png"
+              defaultValue={user?.image ?? ""}
               {...register("image", {
                 required: {
                   value: true,
@@ -126,6 +129,7 @@ const EditUser = () => {
               type="text"
               id="team"
               placeholder="Tech"
+              defaultValue={user?.team ?? ""}
               {...register("team", {
                 required: {
                   value: true,
@@ -165,6 +169,7 @@ const EditUser = () => {
                     message: "Please choose option",
                   },
                 }}
+                //defaultValue={user?.status}
                 control={control}
                 name="status"
                 render={({ field }) => (

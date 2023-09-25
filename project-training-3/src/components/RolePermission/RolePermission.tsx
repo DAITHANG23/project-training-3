@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 
 import { Table, TableBody } from "@mui/material";
 import {
@@ -15,6 +15,7 @@ import { useRoles } from "@/hooks/useFetch";
 import RoleItem from "@/components/RoleItem/RoleItem";
 import NewRole from "@/components/NewRole/NewRole";
 import { useNavigate } from "react-router-dom";
+import { AppContext, AppContextType } from "@/Context/AppContext";
 
 interface Roles {
   role: string;
@@ -25,21 +26,23 @@ const RolePermission = () => {
   const [roles, setRoles] = useState<Roles[]>([]);
   const { data, error, isLoading } = useRoles();
   const navigate = useNavigate();
-  const [open, setOpen] = useState(false);
+  // const [open, setOpen] = useState(false);
+
+  const { open, onSetOpen } = useContext(AppContext) as AppContextType;
 
   const handleOpen = () => {
-    setOpen(true);
+    onSetOpen(true);
     navigate("/roles/new");
   };
 
   const handleClose = () => {
-    setOpen(false);
+    onSetOpen(false);
     navigate("/roles");
   };
 
-  const onSetOpen = (data: boolean) => {
-    setOpen(data);
-  };
+  // const onSetOpen = (data: boolean) => {
+  //   setOpen(data);
+  // };
 
   const listRolePermission = roles?.map((roleItem) => {
     const { id, role, describe } = roleItem;
@@ -70,7 +73,7 @@ const RolePermission = () => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <NewRole onSetOpen={onSetOpen} />
+        <NewRole />
       </StyledModal>
       <StyledTableContainer>
         <Table>

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import {
   StyledSideBar,
@@ -12,10 +12,11 @@ import {
   StyledDotIcon,
 } from "@/components/SideBar/SideBar.styles";
 import { useNavigate } from "react-router-dom";
-interface SideBarProps {
-  onChoosePage: (value: string) => void;
-}
-const SideBar = ({ onChoosePage }: SideBarProps) => {
+import { AppContext, AppContextType } from "@/Context/AppContext";
+
+const SideBar = () => {
+  const { onChoosePage } = useContext(AppContext) as AppContextType;
+
   const [isChooseUserPage, setIsChooseUserPage] = useState<boolean>(true);
 
   const [isChooseRolePage, setIsChooseRolePage] = useState<boolean>(false);

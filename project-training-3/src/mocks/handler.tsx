@@ -1,9 +1,140 @@
 import { rest } from "msw";
 import { Users, Roles } from "@/hooks/useFetch";
 
-let usersListTotal: Users[] = [];
-
-let users: Users[] = [];
+let users: Users[] = [
+  {
+    id: 1,
+    tel: "+65 1234 57 20",
+    image: "avatars.png",
+    name: "Nguyễn Đại Thắng",
+    role: "Staff",
+    team: "Developer",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:45",
+  },
+  {
+    id: 2,
+    tel: "+65 7723 303 40 ",
+    image: "avatar(2).png",
+    name: "Dom Nguyễn",
+    role: "Staff",
+    team: "Developer",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:50",
+  },
+  {
+    id: 3,
+    tel: "+65 1234 57 ",
+    image: "avatar(1).png",
+    name: "Nguyễn Văn Thắng",
+    role: "Admin",
+    team: "Manager",
+    status: "Active",
+    date: "20 Sep 22",
+    time: "22:45",
+  },
+  {
+    id: 4,
+    tel: "+65 1234 57 20",
+    image: "avatars.png",
+    name: "Nguyễn Đại Thắng",
+    role: "Staff",
+    team: "Tech",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:30",
+  },
+  {
+    id: 5,
+    tel: "+65 1234 213",
+    image: "avatar(5).png",
+    name: "Teresa",
+    role: "Staff",
+    team: "Developer",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:48",
+  },
+  {
+    id: 6,
+    tel: "+65 1234 57 ",
+    image: "avatars.png",
+    name: "Nguyễn Đại Nam",
+    role: "Staff",
+    team: "Developer",
+    status: "Active",
+    date: "20 Sep 21",
+    time: "22:45",
+  },
+  {
+    id: 7,
+    tel: "+65 1234 57 20",
+    image: "avatar(3).png",
+    name: "Nguyễn Đại Thắng",
+    role: "Staff",
+    team: "Developer",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:45",
+  },
+  {
+    id: 8,
+    tel: "+65 1234 57 20",
+    image: "avatar(1).png",
+    name: "Nguyễn Đại ",
+    role: "Staff",
+    team: "Tech",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:45",
+  },
+  {
+    id: 9,
+    tel: "+65 1234 57 20",
+    image: "avatar(3).png",
+    name: "Nguyễn asda",
+    role: "Staff",
+    team: "Developer",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:38",
+  },
+  {
+    id: 10,
+    tel: "+65 1234 57 20",
+    image: "avatar(1).png",
+    name: "Anna Nguyễn",
+    role: "Staff",
+    team: "Developer",
+    status: "Suspended",
+    date: "20 Sep 23",
+    time: "22:05",
+  },
+  {
+    id: 11,
+    tel: "+65 1234 5743 ",
+    image: "avatar(2).png",
+    name: "Nguyễn Đại Thắng",
+    role: "Staff",
+    team: "Developer",
+    status: "Active",
+    date: "20 Sep 23",
+    time: "22:45",
+  },
+  {
+    id: 12,
+    tel: "+65 1234 57 20",
+    image: "avatars.png",
+    name: "Nguyễn Đại Thắng",
+    role: "Staff",
+    team: "Developer",
+    status: "Suspended",
+    date: "20 Sep 23",
+    time: "22:08",
+  },
+];
 
 const roles: Roles[] = [];
 
@@ -11,6 +142,8 @@ const roleUpdates: any[] = [];
 
 export const handlers = [
   rest.get("/users", (req, res, ctx) => {
+    let usersList: Users[] = [];
+
     const search = req.url.searchParams.get("search");
 
     const page = Number(req.url.searchParams.get("page"));
@@ -28,29 +161,26 @@ export const handlers = [
 
       const usersPerPage = users.slice(firstPageIndex, lastPageIndex);
 
-      users = usersPerPage;
+      usersList = usersPerPage;
     }
 
-    let usersList: Users[] = [];
+    if (search === null) {
+      usersList = users;
+    }
 
     if (search) {
-      usersList = users.filter((user) => {
-        const searchableText = `${user.name} ${user.role} ${user.team}  `;
-
+      const filteredUsersList = users.filter((user) => {
+        const searchableText = `${user.name} ${user.role} ${user.team}`;
         return searchableText.toLowerCase().includes(search.toLowerCase());
       });
 
-      users = usersList;
-    }
-
-    if (search === null && users.length < usersListTotal.length) {
-      users = usersListTotal;
+      usersList = filteredUsersList;
     }
 
     return res(
       ctx.status(200),
       ctx.json({
-        users,
+        usersList,
       })
     );
   }),
@@ -59,8 +189,6 @@ export const handlers = [
     const user = await req.json();
 
     users.push(user);
-
-    usersListTotal.push(user);
 
     return res(ctx.status(201), ctx.json({ user }));
   }),
@@ -73,7 +201,7 @@ export const handlers = [
     if (!userItem) {
       return res(
         ctx.status(404),
-        ctx.json({ message: `For the id ${id}, no event could be found.` })
+        ctx.json({ message: `For the id ${id}, no user could be found.` })
       );
     }
 

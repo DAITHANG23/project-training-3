@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FormControl, FormControlLabel, Radio } from "@mui/material";
 import {
   StyledModalHeaderContainer,
@@ -18,10 +18,7 @@ import {
 import { Users, useCreateUser } from "@/hooks/useFetch";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-
-interface NewUsersProp {
-  data?: Users[];
-}
+import { AppContext, AppContextType } from "@/Context/AppContext";
 
 export interface UserItem {
   name: string;
@@ -32,12 +29,14 @@ export interface UserItem {
   image: string;
 }
 
-const NewUser = ({ data }: NewUsersProp) => {
+const NewUser = () => {
   const { mutate: createUser } = useCreateUser();
 
   const [users, setUsers] = useState<Users[]>([]);
 
   const navigate = useNavigate();
+
+  const { UsersData } = useContext(AppContext) as AppContextType;
 
   const { register, handleSubmit, formState, reset, control } = useForm({
     defaultValues: {
@@ -52,10 +51,10 @@ const NewUser = ({ data }: NewUsersProp) => {
   const { errors } = formState;
 
   useEffect(() => {
-    if (data) {
-      setUsers(data);
+    if (UsersData) {
+      setUsers(UsersData);
     }
-  }, [data]);
+  }, [UsersData]);
 
   const handleClose = () => {
     navigate("../");
@@ -90,6 +89,7 @@ const NewUser = ({ data }: NewUsersProp) => {
 
     reset();
   });
+
   return (
     <StyledModalHeaderContainer>
       <StyledBoxHeader>
@@ -117,7 +117,6 @@ const NewUser = ({ data }: NewUsersProp) => {
               type="text"
               id="role"
               placeholder="Staff"
-              // defaultValue={}
               {...register("role", {
                 required: {
                   value: true,

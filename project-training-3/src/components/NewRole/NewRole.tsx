@@ -17,12 +17,12 @@ import {
 } from "@/components/NewRole/NewRole.styles";
 import { FormControl } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { AppContext, AppContextType } from "@/Context/AppContext";
+import { useContext } from "react";
 
-interface NewRoleProps {
-  onSetOpen: (data: boolean) => void;
-}
+const NewRole = () => {
+  const { onSetOpen } = useContext(AppContext) as AppContextType;
 
-const NewRole = ({ onSetOpen }: NewRoleProps) => {
   const { mutate: createRole } = useCreateRole();
 
   const navigate = useNavigate();

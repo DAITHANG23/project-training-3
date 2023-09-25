@@ -15,13 +15,12 @@ import {
   StyledRoleLogin,
   StyledExpandMoreIcon,
 } from "@/components/Header/Header.styles";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AppContext, AppContextType } from "@/Context/AppContext";
 
-interface HeaderProps {
-  title?: string;
-  image: string;
-}
-const Header = ({ title, image }: HeaderProps) => {
+const Header = () => {
+  const { imageHeader, titleHeader } = useContext(AppContext) as AppContextType;
+
   const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -36,8 +35,8 @@ const Header = ({ title, image }: HeaderProps) => {
   return (
     <StyledHeaderContainer>
       <StyledUserContainer>
-        <img src={image} alt="user" width={"36px"} height={"36px"} />
-        <StyledTitle>{title}</StyledTitle>
+        <img src={imageHeader} alt="user" width={"36px"} height={"36px"} />
+        <StyledTitle>{titleHeader}</StyledTitle>
       </StyledUserContainer>
 
       <StyledLogin>

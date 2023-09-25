@@ -31,12 +31,12 @@ export interface Users {
 }
 
 export interface UsersItem {
-  tel: string;
-  image: string;
-  name: string;
-  role: string;
-  team: string;
-  status: string;
+  tel?: string;
+  image?: string;
+  name?: string;
+  role?: string;
+  team?: string;
+  status?: string;
 }
 
 export interface Roles {
@@ -240,7 +240,9 @@ export const useCreateRole = () => {
 };
 
 export const useRoleUpdateItem = (id?: string, role?: string) => {
-  const { data, isLoading, error, isFetching, refetch } = useQuery<string[]>(
+  const { data, isLoading, error, isFetching, refetch } = useQuery<{
+    [key: string]: string;
+  }>(
     [
       (QUERY_KEY.useGetRoleUpdate,
       {

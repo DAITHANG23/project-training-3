@@ -40,7 +40,7 @@ export const getUsers = async ({
   }
 
   const res = await axios.get(url, { signal: signal });
-  return res.data?.users;
+  return res.data?.usersList;
 };
 
 export const getUserItem = async ({ signal, id }: UserItem) => {
@@ -56,7 +56,7 @@ export const getUsersSearch = async ({ signal, searchTerm }: UseUserSearch) => {
   }
 
   const res = await axios.get(url, { signal: signal });
-  return res.data?.users;
+  return res.data?.usersList;
 };
 
 export const createUsers = async (user: Users) => {

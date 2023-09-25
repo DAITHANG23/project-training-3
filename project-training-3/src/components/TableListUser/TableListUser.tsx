@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Table, TableRow, TableSortLabel } from "@mui/material";
 import TableHeader from "@/components/TableHeader/TableHeader";
 
@@ -22,17 +22,15 @@ import { usePaging } from "@/hooks/usePaging";
 import NewUser from "@/components/NewUser/NewUser";
 import { useNavigate } from "react-router-dom";
 import { UserItem } from "@/components/UserItem/UserItem";
+import { AppContext, AppContextType } from "@/Context/AppContext";
 
-interface TableListUserProps {
-  onSetData: (data: Users[]) => void;
-}
-const TableListUser = ({ onSetData }: TableListUserProps) => {
+const TableListUser = () => {
+  const { onSetData } = useContext(AppContext) as AppContextType;
   const [users, setUsers] = useState<Users[]>([]);
-  const [statusUser, setStatusUser] = useState<Users[] | undefined>();
+  const [statusUser, setStatusUser] = useState<Users[]>([]);
   const [dataSearch, setDataSearch] = useState<Users[] | undefined>();
   const [open, setOpen] = useState(false);
 
-  // const { data, error, isLoading } = useUsersSearch(search);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -136,7 +134,7 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
         aria-labelledby="parent-modal-title"
         aria-describedby="parent-modal-description"
       >
-        <NewUser data={users} />
+        <NewUser />
       </StyledModal>
       <TableHeader
         onClickButtonStatus={onClickButtonStatus}
@@ -168,8 +166,8 @@ const TableListUser = ({ onSetData }: TableListUserProps) => {
         <StyledTableBody>{TableListUsers}</StyledTableBody>
       </Table>
       <StyledTablePagination
-        rowsPerPageOptions={[5, 10, 20, 30]}
-        count={20}
+        rowsPerPageOptions={[5, 10, 20]}
+        count={statusUser.length}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

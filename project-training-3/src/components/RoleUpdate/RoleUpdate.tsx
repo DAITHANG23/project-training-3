@@ -40,6 +40,10 @@ import {
 import { useRoleUpdate, useRoleUpdateItem } from "@/hooks/useFetch";
 import { useNavigate, useParams } from "react-router-dom";
 
+type DNATanscriberIndex = {
+  [key: string]: string;
+};
+
 const RoleUpdate = () => {
   const [cardIDOpen, setCardIDOpen] = useState<string>();
 
@@ -53,7 +57,9 @@ const RoleUpdate = () => {
 
   const { mutate: createRoleUpdate } = useRoleUpdate(idRole);
 
-  const [rolesUpdateList, setRolesUpdateList] = useState({});
+  const [rolesUpdateList, setRolesUpdateList] = useState<{
+    [key: string]: string;
+  }>();
 
   const navigate = useNavigate();
 
@@ -92,7 +98,7 @@ const RoleUpdate = () => {
     navigate("/roles");
   });
 
-  console.log("data", data);
+  console.log("data", rolesUpdateList);
 
   const TableBodyContent = elements.map((el) => {
     const elementsFeature = ["Add", "Edit", "View"];
@@ -114,6 +120,7 @@ const RoleUpdate = () => {
                     message: "Please choose option",
                   },
                 }}
+                // defaultValue={"yes"}
                 control={control}
                 name={nameEl}
                 render={({ field }) => (
@@ -121,9 +128,10 @@ const RoleUpdate = () => {
                     {...field}
                     row={true}
                     aria-labelledby="demo-row-radio-buttons-group-label"
+                    key={nameEl}
                   >
                     <FormControlLabel
-                      value="Yes"
+                      value={"Yes" ?? ""}
                       control={
                         <Radio
                           checkedIcon={<BpCheckedIcon />}
@@ -134,7 +142,7 @@ const RoleUpdate = () => {
                     />
 
                     <FormControlLabel
-                      value="No"
+                      value={"No" ?? ""}
                       control={
                         <Radio
                           checkedIcon={<BpCheckedIcon />}

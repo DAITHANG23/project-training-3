@@ -16,21 +16,21 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 6000,
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
     },
   },
 });
 
-const localStoragePersistor = createWebStoragePersistor({
-  storage: window.localStorage,
-  serialize: (data) => compress(JSON.stringify(data)),
-  deserialize: (data) => JSON.parse(decompress(data)),
-});
-persistQueryClient({
-  queryClient,
-  persistor: localStoragePersistor,
-  maxAge: Infinity,
-});
+// const localStoragePersistor = createWebStoragePersistor({
+//   storage: window.localStorage,
+//   serialize: (data) => compress(JSON.stringify(data)),
+//   deserialize: (data) => JSON.parse(decompress(data)),
+// });
+// persistQueryClient({
+//   queryClient,
+//   persistor: localStoragePersistor,
+//   maxAge: Infinity,
+// });
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
